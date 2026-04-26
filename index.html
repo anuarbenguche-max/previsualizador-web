@@ -4,72 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Online Code Previewer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg-color: #131314;
-            --card-bg: #1e1f20;
-            --header-dark: #0f0f0f;
-            --text-main: #e3e3e3;
-            --text-dim: #b4b4b4;
-            --code-text: #a0a0a0;
-            --accent-blue: #0070ba; 
-            --accent-red: #cc2929;
-            --border-line: #2a2a2a;
-            --border-radius: 8px;
-            --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.6);
-            --shadow-strong: 0 15px 45px rgba(0, 0, 0, 0.8);
+            /* Colores de Tendencia 2026 */
+            --bg-color: #0f1014;
+            --card-bg: #16181d;
+            --header-dark: #090a0d;
+            --text-main: #f0f1f5;
+            --text-dim: #9ca3af;
+            --code-text: #a1a1aa;
+            --accent-blue: #3b82f6; 
+            --accent-red: #ef4444;
+            --border-line: #22252e;
+            --border-radius: 6px;
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.4);
+            
+            /* Temas del Visor */
             --preview-light: #f5f5f5;
             --preview-dark: #1e1f20;
         }
 
         * { box-sizing: border-box; }
-        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Lato', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            overflow: hidden; 
+            -webkit-font-smoothing: antialiased;
+        }
 
-        header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
-        h1 { font-size: 1.3rem; font-weight: 900; margin: 0; letter-spacing: -0.5px; color: #fff; }
+        /* [HEADER] */
+        header { padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-line); }
+        h1 { font-size: 1.1rem; font-weight: 800; margin: 0; letter-spacing: -0.8px; }
         
-        .actions-group { display: flex; gap: 12px; }
-        .btn { padding: 8px 18px; text-decoration: none; border-radius: var(--border-radius); font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; border: none; cursor: pointer; color: white; }
-        .btn-download { background-color: #303136; border: 1px solid var(--border-line); }
+        .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+        .actions-group { display: flex; gap: 10px; }
+
+        .btn { padding: 8px 16px; text-decoration: none; border-radius: var(--border-radius); font-weight: 600; font-size: 0.75rem; display: flex; align-items: center; gap: 6px; transition: 0.2s; border: none; cursor: pointer; color: white; }
+        .btn-download { background-color: #272a34; border: 1px solid var(--border-line); color: var(--text-dim); }
         .btn-paypal { background-color: var(--accent-blue); }
+        .btn:hover { transform: translateY(-1px); filter: brightness(1.2); }
 
-        .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 20px 20px 20px; flex: 1; overflow: hidden; }
+        /* [LAYOUT] */
+        .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; flex: 1; overflow: hidden; }
 
-        .editors-column { display: flex; flex-direction: column; gap: 15px; height: 100%; }
+        .editors-column { display: flex; flex-direction: column; gap: 12px; height: 100%; }
         .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); box-shadow: var(--shadow-soft); }
-        .editor-header { background: var(--header-dark); padding: 10px 15px; border-bottom: 2px solid var(--border-line); }
-        .label { font-size: 0.6rem; color: var(--text-dim); font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; }
-        textarea { background: transparent; border: none; color: var(--code-text); font-family: 'Consolas', monospace; font-size: 13px; flex: 1; padding: 12px; resize: none; outline: none; line-height: 1.6; }
+        .editor-header { background: var(--header-dark); padding: 8px 12px; border-bottom: 1px solid var(--border-line); }
+        .label { font-size: 0.55rem; color: var(--text-dim); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+        
+        textarea { 
+            background: transparent; border: none; color: var(--code-text); 
+            font-family: 'JetBrains Mono', monospace; font-size: 13px; 
+            flex: 1; padding: 15px; resize: none; outline: none; line-height: 1.7; tab-size: 2; 
+        }
 
+        /* [TABS & PREVIEW] */
         .preview-container { display: flex; flex-direction: column; height: 100%; border-radius: var(--border-radius); border: 1px solid var(--border-line); box-shadow: var(--shadow-soft); overflow: hidden; position: relative; }
-        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 20px; border-bottom: 2px solid var(--border-line); justify-content: space-between; }
+        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 15px; border-bottom: 1px solid var(--border-line); justify-content: space-between; }
         
-        .tabs-wrapper { display: flex; align-items: center; overflow-x: auto; flex: 1; gap: 2px; }
-        .tab { padding: 12px 15px; color: var(--text-dim); font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; transition: 0.2s; min-width: 110px; }
-        .tab.active { color: white; border-bottom: 2px solid var(--accent-blue); background: rgba(255,255,255,0.05); }
-        .tab span { outline: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 2px 4px; border-radius: 4px; }
+        .tabs-wrapper { display: flex; align-items: center; overflow-x: auto; flex: 1; }
+        .tab { padding: 10px 15px; color: var(--text-dim); font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; transition: 0.2s; min-width: 110px; }
+        .tab.active { color: white; border-bottom: 2px solid var(--accent-blue); background: rgba(255,255,255,0.03); }
+        .tab span { outline: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 2px 4px; border-radius: 3px; }
         
-        .close-tab { font-size: 10px; opacity: 0.3; transition: 0.2s; padding: 2px 4px; border-radius: 4px; }
-        .close-tab:hover { opacity: 1; background: var(--accent-red); color: white; }
+        .close-tab { font-size: 10px; opacity: 0.2; transition: 0.2s; padding: 2px 4px; }
+        .close-tab:hover { opacity: 1; background: var(--accent-red); color: white; border-radius: 3px; }
 
-        .add-tab { font-size: 1.5rem; color: var(--text-dim); cursor: pointer; padding: 0 12px; transition: 0.3s; display: flex; align-items: center; line-height: 1; }
-        .add-tab:hover { color: white; transform: scale(1.2); }
-        .add-tab.disabled { opacity: 0.1; cursor: not-allowed; pointer-events: none; }
+        .add-tab { font-size: 1.4rem; color: var(--text-dim); cursor: pointer; padding: 0 12px; opacity: 0.5; transition: 0.2s; }
+        .add-tab:hover { color: white; opacity: 1; transform: scale(1.1); }
+        .add-tab.disabled { opacity: 0.05; cursor: not-allowed; pointer-events: none; }
 
-        /* Contenedor de controles derechos */
-        .controls-right { display: flex; align-items: center; gap: 15px; }
+        .controls-right { display: flex; align-items: center; gap: 12px; }
+        .eye-care-note { font-size: 0.65rem; font-style: italic; color: var(--text-dim); opacity: 0.7; white-space: nowrap; }
 
-        /* Nota de protección visual mejorada */
-        .eye-care-note { font-size: 0.75rem; font-style: italic; color: var(--text-dim); font-weight: 400; opacity: 0.8; white-space: nowrap; }
-
-        .theme-btn { cursor: pointer; display: flex; align-items: center; opacity: 0.7; transition: 0.3s; }
+        .theme-btn { cursor: pointer; display: flex; align-items: center; opacity: 0.5; transition: 0.2s; }
         .theme-btn:hover { opacity: 1; }
-        .theme-btn svg { width: 18px; height: 18px; stroke: white; }
+        .theme-btn svg { width: 16px; height: 16px; stroke: white; }
 
         iframe { width: 100%; height: 100%; border: none; }
 
-        @media (max-width: 1100px) { .eye-care-note { display: none; } } /* Se oculta en pantallas muy pequeñas para no amontonar */
+        @media (max-width: 1150px) { .eye-care-note { display: none; } }
         @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } .preview-container { min-height: 400px; order: -1; } }
     </style>
 </head>
@@ -77,9 +99,11 @@
 
 <header>
     <h1>Free Online Code Previewer</h1>
-    <div class="actions-group">
-        <button class="btn btn-download" onclick="downloadCurrentTab()">DESCARGAR .HTML</button>
-        <a href="https://paypal.me/abenguche" target="_blank" class="btn btn-paypal">DONAR CON PAYPAL</a>
+    <div class="header-right">
+        <div class="actions-group">
+            <button class="btn btn-download" id="btn-download" onclick="downloadCurrentTab()">DOWNLOAD</button>
+            <a href="https://paypal.me/abenguche" target="_blank" class="btn btn-paypal" id="btn-paypal">DONATE</a>
+        </div>
     </div>
 </header>
 
@@ -94,18 +118,17 @@
             <textarea id="css-code"></textarea>
         </div>
         <div class="editor-box">
-            <div class="editor-header"><div class="label">JS</div></div>
+            <div class="editor-header"><div class="label">JAVASCRIPT</div></div>
             <textarea id="js-code"></textarea>
         </div>
     </div>
 
     <div class="preview-container" id="preview-wrapper">
         <div class="tabs-bar">
-            <div class="tabs-wrapper" id="tabs-list">
-                </div>
+            <div class="tabs-wrapper" id="tabs-list"></div>
             <div class="controls-right">
-                <span class="eye-care-note">Cuidamos tus ojos con modo oscuro, cámbialo aquí:</span>
-                <div class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Cambiar tema">
+                <span class="eye-care-note" id="eye-note"></span>
+                <div class="theme-btn" onclick="toggleTheme()" title="Toggle Theme">
                     <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
                     </svg>
@@ -117,9 +140,39 @@
 </div>
 
 <script>
+    // --- LÓGICA DE IDIOMA ---
+    const userLang = navigator.language || navigator.userLanguage;
+    const isSpanish = userLang.startsWith('es');
+
+    const i18n = {
+        es: {
+            download: "DESCARGAR .HTML",
+            donate: "APOYAR / DONAR",
+            eyeNote: "Cuidamos tus ojos con modo oscuro:",
+            proj: "Proyecto",
+            hello: "<h1>Hola mundo</h1>",
+            css: "body {\n  font-family: 'Inter', sans-serif;\n  text-align: center;\n  padding-top: 50px;\n}"
+        },
+        en: {
+            download: "DOWNLOAD .HTML",
+            donate: "DONATE / SUPPORT",
+            eyeNote: "Protecting your eyes with dark mode:",
+            proj: "Project",
+            hello: "<h1>Hello world</h1>",
+            css: "body {\n  font-family: 'Inter', sans-serif;\n  text-align: center;\n  padding-top: 50px;\n}"
+        }
+    };
+
+    const lang = isSpanish ? i18n.es : i18n.en;
+
+    // Aplicar textos al UI
+    document.getElementById('btn-download').innerText = lang.download;
+    document.getElementById('btn-paypal').innerText = lang.donate;
+    document.getElementById('eye-note').innerText = lang.eyeNote;
+
     let tabs = [];
     let activeTabId = null;
-    let isDarkMode = true; 
+    let isDarkMode = true; // Inicia en oscuro
     const MAX_TABS = 5;
 
     const htmlInput = document.getElementById('html-code');
@@ -132,13 +185,13 @@
     function createNewTab() {
         if (tabs.length >= MAX_TABS) return;
         let num = 1;
-        while(tabs.some(t => t.name === `Proyecto ${num}`)) { num++; }
+        while(tabs.some(t => t.name === `${lang.proj} ${num}`)) { num++; }
         const id = Date.now();
         tabs.push({
             id: id,
-            name: `Proyecto ${num}`,
-            html: "<h1>Hola mundo</h1>",
-            css: "body {\n  font-family: 'Lato', sans-serif;\n  text-align: center;\n  padding-top: 50px;\n}",
+            name: `${lang.proj} ${num}`,
+            html: lang.hello,
+            css: lang.css,
             js: ""
         });
         renderTabs();
@@ -175,7 +228,7 @@
     function disableEdit(id, span) {
         span.contentEditable = false;
         const tab = tabs.find(t => t.id === id);
-        if (tab) tab.name = span.innerText.trim() || "Proyecto";
+        if (tab) tab.name = span.innerText.trim() || (isSpanish ? "Proyecto" : "Project");
         renderTabs();
     }
 
