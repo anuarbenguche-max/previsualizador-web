@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Online Code Previewer Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0f1014;
@@ -34,7 +34,16 @@
         }
         .brand { display: flex; flex-direction: column; }
         h1 { font-size: 1rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
-        .storage-warning { font-size: 0.55rem; color: var(--text-dim); font-style: italic; opacity: 0.6; }
+        
+        /* NOTA DE ADVERTENCIA MEJORADA: Más legible */
+        .storage-warning { 
+            font-size: 0.65rem; /* Un poco más grande */
+            color: var(--text-dim); 
+            font-style: italic; 
+            font-weight: 500; /* Más gruesa */
+            opacity: 0.9; /* Menos transparente */
+            margin-top: 1px;
+        }
         
         .actions-group { display: flex; gap: 8px; align-items: center; }
 
@@ -73,7 +82,7 @@
         .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); }
         .editor-header { background: var(--header-dark); padding: 6px 12px; border-bottom: 1px solid var(--border-line); }
         .label { font-size: 0.5rem; color: var(--text-dim); font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; }
-        textarea { background: transparent; border: none; color: var(--code-text); font-family: 'JetBrains Mono', monospace; font-size: 12px; flex: 1; padding: 12px; resize: none; outline: none; line-height: 1.6; }
+        textarea { background: transparent; border: none; color: var(--code-text); font-family: 'JetBrains Mono', monospace; font-size: 12px; flex: 1; padding: 12px; resize: none; outline: none; line-height: 1.6; tab-size: 2; }
 
         .preview-container { display: flex; flex-direction: column; height: 100%; border-radius: var(--border-radius); border: 1px solid var(--border-line); overflow: hidden; position: relative; }
         .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 12px; border-bottom: 1px solid var(--border-line); justify-content: space-between; height: 35px; }
@@ -84,7 +93,7 @@
         .add-tab { font-size: 1.2rem; color: var(--text-dim); cursor: pointer; padding: 0 10px; }
 
         .eye-care-note { font-size: 0.6rem; font-style: italic; color: var(--text-dim); margin-right: 8px; }
-        iframe { width: 100%; height: 100%; border: none; }
+        iframe { width: 100%; height: 100%; border: none; background: white; }
 
         @media (max-width: 900px) { 
             .main-layout { grid-template-columns: 1fr; overflow-y: auto; } 
