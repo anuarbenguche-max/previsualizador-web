@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Online Code Previewer</title>
-    
+    <title>Free Online Code Previewer Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
     <style>
         :root {
-            /* Colores de Tendencia 2026 */
             --bg-color: #0f1014;
             --card-bg: #16181d;
             --header-dark: #090a0d;
@@ -21,84 +18,50 @@
             --border-line: #22252e;
             --border-radius: 6px;
             --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.4);
-            
-            /* Temas del Visor */
-            --preview-light: #f5f5f5;
-            --preview-dark: #1e1f20;
         }
 
         * { box-sizing: border-box; }
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            overflow: hidden; 
-            -webkit-font-smoothing: antialiased;
-        }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        /* [HEADER] */
         header { padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-line); }
         h1 { font-size: 1.1rem; font-weight: 800; margin: 0; letter-spacing: -0.8px; }
         
         .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
         .actions-group { display: flex; gap: 10px; }
 
-        .btn { padding: 8px 16px; text-decoration: none; border-radius: var(--border-radius); font-weight: 600; font-size: 0.75rem; display: flex; align-items: center; gap: 6px; transition: 0.2s; border: none; cursor: pointer; color: white; }
+        .btn { padding: 8px 16px; border-radius: var(--border-radius); font-weight: 600; font-size: 0.75rem; border: none; cursor: pointer; color: white; transition: 0.2s; }
         .btn-download { background-color: #272a34; border: 1px solid var(--border-line); color: var(--text-dim); }
         .btn-paypal { background-color: var(--accent-blue); }
-        .btn:hover { transform: translateY(-1px); filter: brightness(1.2); }
 
-        /* [LAYOUT] */
         .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; flex: 1; overflow: hidden; }
 
         .editors-column { display: flex; flex-direction: column; gap: 12px; height: 100%; }
-        .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); box-shadow: var(--shadow-soft); }
+        .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); }
         .editor-header { background: var(--header-dark); padding: 8px 12px; border-bottom: 1px solid var(--border-line); }
         .label { font-size: 0.55rem; color: var(--text-dim); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
         
-        textarea { 
-            background: transparent; border: none; color: var(--code-text); 
-            font-family: 'JetBrains Mono', monospace; font-size: 13px; 
-            flex: 1; padding: 15px; resize: none; outline: none; line-height: 1.7; tab-size: 2; 
-        }
+        textarea { background: transparent; border: none; color: var(--code-text); font-family: 'JetBrains Mono', monospace; font-size: 13px; flex: 1; padding: 15px; resize: none; outline: none; line-height: 1.7; }
 
-        /* [TABS & PREVIEW] */
-        .preview-container { display: flex; flex-direction: column; height: 100%; border-radius: var(--border-radius); border: 1px solid var(--border-line); box-shadow: var(--shadow-soft); overflow: hidden; position: relative; }
-        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 15px; border-bottom: 1px solid var(--border-line); justify-content: space-between; }
+        .preview-container { display: flex; flex-direction: column; height: 100%; border-radius: var(--border-radius); border: 1px solid var(--border-line); background: #fff; overflow: hidden; }
+        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 15px; border-bottom: 1px solid var(--border-line); }
         
         .tabs-wrapper { display: flex; align-items: center; overflow-x: auto; flex: 1; }
-        .tab { padding: 10px 15px; color: var(--text-dim); font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; transition: 0.2s; min-width: 110px; }
+        .tab { padding: 10px 15px; color: var(--text-dim); font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; }
         .tab.active { color: white; border-bottom: 2px solid var(--accent-blue); background: rgba(255,255,255,0.03); }
-        .tab span { outline: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 2px 4px; border-radius: 3px; }
         
-        .close-tab { font-size: 10px; opacity: 0.2; transition: 0.2s; padding: 2px 4px; }
-        .close-tab:hover { opacity: 1; background: var(--accent-red); color: white; border-radius: 3px; }
-
-        .add-tab { font-size: 1.4rem; color: var(--text-dim); cursor: pointer; padding: 0 12px; opacity: 0.5; transition: 0.2s; }
-        .add-tab:hover { color: white; opacity: 1; transform: scale(1.1); }
-        .add-tab.disabled { opacity: 0.05; cursor: not-allowed; pointer-events: none; }
+        .close-tab { font-size: 10px; opacity: 0.2; }
+        .add-tab { font-size: 1.4rem; color: var(--text-dim); cursor: pointer; padding: 0 12px; }
 
         .controls-right { display: flex; align-items: center; gap: 12px; }
-        .eye-care-note { font-size: 0.65rem; font-style: italic; color: var(--text-dim); opacity: 0.7; white-space: nowrap; }
+        .eye-care-note { font-size: 0.65rem; font-style: italic; color: var(--text-dim); }
 
-        .theme-btn { cursor: pointer; display: flex; align-items: center; opacity: 0.5; transition: 0.2s; }
-        .theme-btn:hover { opacity: 1; }
-        .theme-btn svg { width: 16px; height: 16px; stroke: white; }
-
-        iframe { width: 100%; height: 100%; border: none; }
-
-        @media (max-width: 1150px) { .eye-care-note { display: none; } }
-        @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } .preview-container { min-height: 400px; order: -1; } }
+        iframe { width: 100%; height: 100%; border: none; background: white; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Free Online Code Previewer</h1>
+    <h1 id="site-title">Free Online Code Previewer</h1>
     <div class="header-right">
         <div class="actions-group">
             <button class="btn btn-download" id="btn-download" onclick="downloadCurrentTab()">DOWNLOAD</button>
@@ -111,27 +74,25 @@
     <div class="editors-column">
         <div class="editor-box">
             <div class="editor-header"><div class="label">HTML</div></div>
-            <textarea id="html-code"></textarea>
+            <textarea id="html-code" oninput="saveAndPreview()"></textarea>
         </div>
         <div class="editor-box">
             <div class="editor-header"><div class="label">CSS</div></div>
-            <textarea id="css-code"></textarea>
+            <textarea id="css-code" oninput="saveAndPreview()"></textarea>
         </div>
         <div class="editor-box">
-            <div class="editor-header"><div class="label">JAVASCRIPT</div></div>
-            <textarea id="js-code"></textarea>
+            <div class="editor-header"><div class="label">JS</div></div>
+            <textarea id="js-code" oninput="saveAndPreview()"></textarea>
         </div>
     </div>
 
-    <div class="preview-container" id="preview-wrapper">
+    <div class="preview-container">
         <div class="tabs-bar">
             <div class="tabs-wrapper" id="tabs-list"></div>
             <div class="controls-right">
                 <span class="eye-care-note" id="eye-note"></span>
-                <div class="theme-btn" onclick="toggleTheme()" title="Toggle Theme">
-                    <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
-                    </svg>
+                <div class="theme-btn" onclick="toggleTheme()" style="cursor:pointer">
+                    <svg id="theme-icon" width="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
                 </div>
             </div>
         </div>
@@ -140,161 +101,102 @@
 </div>
 
 <script>
-    // --- LÓGICA DE IDIOMA ---
-    const userLang = navigator.language || navigator.userLanguage;
-    const isSpanish = userLang.startsWith('es');
-
-    const i18n = {
-        es: {
-            download: "DESCARGAR .HTML",
-            donate: "APOYAR / DONAR",
-            eyeNote: "Cuidamos tus ojos con modo oscuro:",
-            proj: "Proyecto",
-            hello: "<h1>Hola mundo</h1>",
-            css: "body {\n  font-family: 'Inter', sans-serif;\n  text-align: center;\n  padding-top: 50px;\n}"
-        },
-        en: {
-            download: "DOWNLOAD .HTML",
-            donate: "DONATE / SUPPORT",
-            eyeNote: "Protecting your eyes with dark mode:",
-            proj: "Project",
-            hello: "<h1>Hello world</h1>",
-            css: "body {\n  font-family: 'Inter', sans-serif;\n  text-align: center;\n  padding-top: 50px;\n}"
-        }
+    const isSpanish = (navigator.language || navigator.userLanguage).startsWith('es');
+    const lang = isSpanish ? {
+        dl: "DESCARGAR", donate: "DONAR", note: "Modo oscuro para tus ojos:", proj: "Proyecto", hello: "<h1>Hola mundo</h1>"
+    } : {
+        dl: "DOWNLOAD", donate: "DONATE", note: "Dark mode for your eyes:", proj: "Project", hello: "<h1>Hello world</h1>"
     };
 
-    const lang = isSpanish ? i18n.es : i18n.en;
-
-    // Aplicar textos al UI
-    document.getElementById('btn-download').innerText = lang.download;
+    document.getElementById('btn-download').innerText = lang.dl;
     document.getElementById('btn-paypal').innerText = lang.donate;
-    document.getElementById('eye-note').innerText = lang.eyeNote;
+    document.getElementById('eye-note').innerText = lang.note;
 
-    let tabs = [];
-    let activeTabId = null;
-    let isDarkMode = true; // Inicia en oscuro
-    const MAX_TABS = 5;
+    let tabs = JSON.parse(localStorage.getItem('previewer_tabs')) || [];
+    let activeTabId = localStorage.getItem('previewer_active_tab') || null;
+    let isDarkMode = true;
 
-    const htmlInput = document.getElementById('html-code');
-    const cssInput = document.getElementById('css-code');
-    const jsInput = document.getElementById('js-code');
-    const preview = document.getElementById('preview-iframe');
-    const tabsList = document.getElementById('tabs-list');
-    const themeIcon = document.getElementById('theme-icon');
+    function saveAndPreview() {
+        const tab = tabs.find(t => t.id == activeTabId);
+        if (tab) {
+            tab.html = document.getElementById('html-code').value;
+            tab.css = document.getElementById('css-code').value;
+            tab.js = document.getElementById('js-code').value;
+            localStorage.setItem('previewer_tabs', JSON.stringify(tabs));
+            updateIframe();
+        }
+    }
 
-    function createNewTab() {
-        if (tabs.length >= MAX_TABS) return;
-        let num = 1;
-        while(tabs.some(t => t.name === `${lang.proj} ${num}`)) { num++; }
-        const id = Date.now();
-        tabs.push({
-            id: id,
-            name: `${lang.proj} ${num}`,
-            html: lang.hello,
-            css: lang.css,
-            js: ""
-        });
-        renderTabs();
-        switchTab(id);
+    function updateIframe() {
+        const tab = tabs.find(t => t.id == activeTabId);
+        if (!tab) return;
+        const preview = document.getElementById('preview-iframe');
+        const doc = preview.contentDocument || preview.contentWindow.document;
+        const bg = isDarkMode ? "#1e1f20" : "#ffffff";
+        const color = isDarkMode ? "#e3e3e3" : "#333";
+        doc.open();
+        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;font-family:sans-serif;}${tab.css}</style></head><body>${tab.html}<script>${tab.js}<\/script></body></html>`);
+        doc.close();
     }
 
     function renderTabs() {
-        tabsList.innerHTML = "";
+        const list = document.getElementById('tabs-list');
+        list.innerHTML = "";
         tabs.forEach(tab => {
-            const tabEl = document.createElement('div');
-            tabEl.className = `tab ${tab.id === activeTabId ? 'active' : ''}`;
-            tabEl.onclick = () => switchTab(tab.id);
-            tabEl.ondblclick = () => enableEdit(tab.id, tabEl.querySelector('span'));
-            tabEl.innerHTML = `
-                <span onblur="disableEdit(${tab.id}, this)" onkeydown="checkEnter(event, this)">${tab.name}</span>
-                <div class="close-tab" onclick="closeTab(${tab.id}, event)">✕</div>
-            `;
-            tabsList.appendChild(tabEl);
+            const el = document.createElement('div');
+            el.className = `tab ${tab.id == activeTabId ? 'active' : ''}`;
+            el.innerHTML = `<span>${tab.name}</span><div class="close-tab" onclick="closeTab(${tab.id}, event)">✕</div>`;
+            el.onclick = () => switchTab(tab.id);
+            list.appendChild(el);
         });
-
-        const addBtn = document.createElement('div');
-        addBtn.className = `add-tab ${tabs.length >= MAX_TABS ? 'disabled' : ''}`;
-        addBtn.innerHTML = "+";
-        addBtn.onclick = createNewTab;
-        tabsList.appendChild(addBtn);
+        if (tabs.length < 5) {
+            const add = document.createElement('div');
+            add.className = "add-tab";
+            add.innerText = "+";
+            add.onclick = createNewTab;
+            list.appendChild(add);
+        }
     }
 
-    function enableEdit(id, span) {
-        span.contentEditable = true;
-        span.focus();
-        document.execCommand('selectAll', false, null);
+    function createNewTab() {
+        const id = Date.now();
+        tabs.push({ id, name: `${lang.proj} ${tabs.length + 1}`, html: lang.hello, css: "", js: "" });
+        switchTab(id);
     }
-
-    function disableEdit(id, span) {
-        span.contentEditable = false;
-        const tab = tabs.find(t => t.id === id);
-        if (tab) tab.name = span.innerText.trim() || (isSpanish ? "Proyecto" : "Project");
-        renderTabs();
-    }
-
-    function checkEnter(e, span) { if (e.key === 'Enter') { e.preventDefault(); span.blur(); } }
 
     function switchTab(id) {
-        if (activeTabId) saveState();
         activeTabId = id;
-        const tab = tabs.find(t => t.id === id);
-        if (tab) {
-            htmlInput.value = tab.html;
-            cssInput.value = tab.css;
-            jsInput.value = tab.js;
-            renderTabs();
-            updatePreview();
-        }
-    }
-
-    function saveState() {
-        const tab = tabs.find(t => t.id === activeTabId);
-        if (tab) {
-            tab.html = htmlInput.value;
-            tab.css = cssInput.value;
-            tab.js = jsInput.value;
-        }
+        localStorage.setItem('previewer_active_tab', id);
+        const tab = tabs.find(t => t.id == id);
+        document.getElementById('html-code').value = tab.html;
+        document.getElementById('css-code').value = tab.css;
+        document.getElementById('js-code').value = tab.js;
+        renderTabs();
+        updateIframe();
     }
 
     function closeTab(id, e) {
         e.stopPropagation();
-        tabs = tabs.filter(t => t.id !== id);
+        tabs = tabs.filter(t => t.id != id);
         if (tabs.length === 0) createNewTab();
-        else if (activeTabId === id) switchTab(tabs[0].id);
-        else renderTabs();
+        else switchTab(tabs[0].id);
     }
 
     function toggleTheme() {
         isDarkMode = !isDarkMode;
-        themeIcon.innerHTML = isDarkMode ? 
-            '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>' : 
-            '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
-        updatePreview();
+        updateIframe();
     }
-
-    function updatePreview() {
-        const doc = preview.contentDocument || preview.contentWindow.document;
-        const bg = isDarkMode ? "#1e1f20" : "#f5f5f5";
-        const color = isDarkMode ? "#e3e3e3" : "#333";
-        document.getElementById('preview-wrapper').style.background = bg;
-        doc.open();
-        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;transition:0.3s;}${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`);
-        doc.close();
-    }
-
-    [htmlInput, cssInput, jsInput].forEach(el => el.addEventListener('input', () => { saveState(); updatePreview(); }));
 
     function downloadCurrentTab() {
-        const tab = tabs.find(t => t.id === activeTabId);
-        const code = `<!DOCTYPE html><html><head><style>body{background:${isDarkMode?'#1e1f20':'#f5f5f5'};color:${isDarkMode?'#e3e3e3':'#333'};}${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`;
-        const blob = new Blob([code], {type: 'text/html'});
+        const tab = tabs.find(t => t.id == activeTabId);
+        const blob = new Blob([`<html><style>${tab.css}</style><body>${tab.html}<script>${tab.js}<\/script></body></html>`], {type: 'text/html'});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = `${tab.name}.html`;
         a.click();
     }
 
-    createNewTab(); 
+    if (tabs.length === 0) createNewTab(); else switchTab(activeTabId || tabs[0].id);
 </script>
 </body>
 </html>
