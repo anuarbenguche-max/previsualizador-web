@@ -33,7 +33,6 @@
         .brand { display: flex; flex-direction: column; }
         h1 { font-size: 1.1rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
         
-        /* ADVERTENCIA MUCHO MÁS LEGIBLE */
         .storage-warning { 
             font-size: 0.8rem; 
             color: #ccc; 
@@ -161,14 +160,14 @@
         clearMsg: "¿Borrar todo?",
         dl: "DESCARGAR", donate: "DONAR", note: "Modo oscuro:", proj: "Proyecto",
         html: "<h1>¡Hola Mundo!</h1>\n<button id='btn'>Haz clic aquí</button>", 
-        css: "body { text-align: center; padding-top: 50px; }\nbutton { padding: 10px; cursor: pointer; }", 
+        css: "body { text-align: center; padding-top: 50px; }\nbutton { padding: 10px; cursor: pointer; background: #3b82f6; color: white; border: none; border-radius: 4px; }", 
         js: "document.getElementById('btn').onclick = () => alert('¡Funciona!');"
     } : {
         warn: "Light projects only / Proyectos ligeros",
         clearMsg: "Clear all?",
         dl: "DOWNLOAD", donate: "DONATE", note: "Dark mode:", proj: "Project",
         html: "<h1>Hello World!</h1>\n<button id='btn'>Click me</button>", 
-        css: "body { text-align: center; padding-top: 50px; }\nbutton { padding: 10px; cursor: pointer; }", 
+        css: "body { text-align: center; padding-top: 50px; }\nbutton { padding: 10px; cursor: pointer; background: #3b82f6; color: white; border: none; border-radius: 4px; }", 
         js: "document.getElementById('btn').onclick = () => alert('It works!');"
     };
 
@@ -177,8 +176,8 @@
     document.getElementById('txt-donate').innerText = lang.donate;
     document.getElementById('eye-note').innerText = lang.note;
 
-    let tabs = JSON.parse(localStorage.getItem('tabs_v6')) || [];
-    let activeTabId = localStorage.getItem('active_v6') || null;
+    let tabs = JSON.parse(localStorage.getItem('tabs_v7')) || [];
+    let activeTabId = localStorage.getItem('active_v7') || null;
     let isDarkMode = true;
 
     function updateLines(type) {
@@ -199,7 +198,7 @@
             tab.html = document.getElementById('html-code').value;
             tab.css = document.getElementById('css-code').value;
             tab.js = document.getElementById('js-code').value;
-            localStorage.setItem('tabs_v6', JSON.stringify(tabs));
+            localStorage.setItem('tabs_v7', JSON.stringify(tabs));
             updateIframe();
         }
     }
@@ -226,7 +225,7 @@
             el.ondblclick = () => {
                 const s = el.querySelector('span'); s.contentEditable = true; s.focus();
                 document.execCommand('selectAll', false, null);
-                s.onblur = () => { s.contentEditable = false; tab.name = s.innerText.trim() || "Project"; localStorage.setItem('tabs_v6', JSON.stringify(tabs)); renderTabs(); };
+                s.onblur = () => { s.contentEditable = false; tab.name = s.innerText.trim() || "Project"; localStorage.setItem('tabs_v7', JSON.stringify(tabs)); renderTabs(); };
             };
             list.appendChild(el);
         });
@@ -243,8 +242,13 @@
 
     function switchTab(id) {
         activeTabId = id;
-        localStorage.setItem('active_v6', id);
+        localStorage.setItem('active_v7', id);
         const tab = tabs.find(t => t.id == id);
+        
+        // Si por alguna razón la pestaña guardada estaba vacía, inyectamos el ejemplo
+        if(!tab.css) tab.css = lang.css;
+        if(!tab.js) tab.js = lang.js;
+
         ['html', 'css', 'js'].forEach(type => {
             document.getElementById(`${type}-code`).value = tab[type];
             updateLines(type);
