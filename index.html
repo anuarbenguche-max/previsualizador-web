@@ -4,147 +4,159 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anuar Code Previewer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Estilo inspirado en Gemini Oscuro */
         :root {
             --bg-color: #131314;
             --card-bg: #1e1f20;
             --text-main: #e3e3e3;
             --text-dim: #b4b4b4;
-            --accent-blue: #0070ba; /* Azul PayPal */
-            --border-radius: 16px;
+            --code-text: #a0a0a0; /* Gris oscuro para el código */
+            --accent-blue: #0070ba;
+            --border-radius: 8px; /* Redondez sutil */
         }
+
+        * { box-sizing: border-box; }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Lato', sans-serif;
             margin: 0;
             display: flex;
             flex-direction: column;
             height: 100vh;
-            overflow: hidden;
         }
 
-        /* Encabezado */
         header {
-            padding: 15px 30px;
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         h1 {
-            font-size: 1.2rem;
-            font-weight: 400;
+            font-size: 1.5rem;
+            font-weight: 900; /* Fuente gruesa */
             margin: 0;
-            color: var(--text-main);
+            letter-spacing: -0.5px;
         }
 
         .btn-paypal {
             background-color: var(--accent-blue);
             color: white;
-            padding: 10px 24px;
+            padding: 12px 20px;
             text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: opacity 0.2s;
+            border-radius: var(--border-radius);
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s;
         }
 
-        .btn-paypal:hover {
-            opacity: 0.9;
-        }
+        .btn-paypal:hover { transform: scale(1.02); }
 
-        /* Contenedor Principal */
+        /* Contenedor Principal Responsive */
         .main-layout {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr; /* Dos columnas en PC */
             gap: 20px;
             padding: 0 30px 30px 30px;
             flex: 1;
             overflow: hidden;
         }
 
-        /* Editores a la izquierda */
+        /* Columna de Editores */
         .editors-column {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            overflow-y: auto;
-            padding-right: 10px;
+            height: 100%;
         }
 
         .editor-box {
             background: var(--card-bg);
             border-radius: var(--border-radius);
             padding: 15px;
+            flex: 1; /* Todos el mismo tamaño */
             display: flex;
             flex-direction: column;
+            min-height: 150px;
         }
 
         .label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-dim);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: bold;
+            margin-bottom: 10px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
         }
 
         textarea {
             background: transparent;
             border: none;
-            color: #4af626; /* Color código tipo terminal */
-            font-family: 'Consolas', 'Monaco', monospace;
+            color: var(--code-text);
+            font-family: 'Consolas', monospace;
             font-size: 14px;
+            flex: 1;
             resize: none;
             outline: none;
-            min-height: 120px;
+            line-height: 1.5;
         }
 
-        /* Vista previa a la derecha */
+        /* Vista Previa */
         .preview-column {
-            background: white; /* El lienzo de dibujo suele ser blanco */
+            background: white;
             border-radius: var(--border-radius);
             overflow: hidden;
-            display: flex;
+            height: 100%;
         }
 
-        #preview-iframe {
+        iframe {
             width: 100%;
+            height: 100%;
             border: none;
-            background: white;
         }
 
-        /* Scrollbar personalizada */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        /* RESPONSIVE: Ajustes para tablets y móviles */
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr; /* Una sola columna */
+                overflow-y: auto;
+            }
+            body { overflow-y: auto; height: auto; }
+            .preview-column { min-height: 400px; order: -1; } /* Vista previa arriba en móvil */
+            .editors-column { height: auto; }
+        }
     </style>
 </head>
 <body>
 
 <header>
     <h1>Anuar Code Previewer</h1>
-    <a href="https://www.paypal.me/TU_USUARIO" target="_blank" class="btn-paypal">DONAR CON PAYPAL</a>
+    <a href="https://www.paypal.me/TU_USUARIO" target="_blank" class="btn-paypal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path></svg>
+        DONAR CON PAYPAL
+    </a>
 </header>
 
 <div class="main-layout">
     <div class="editors-column">
         <div class="editor-box">
             <div class="label">HTML</div>
-            <textarea id="html-code" placeholder="<div>Hola</div>"></textarea>
+            <textarea id="html-code" placeholder="Escribe HTML..."></textarea>
         </div>
-        
         <div class="editor-box">
             <div class="label">CSS</div>
-            <textarea id="css-code" placeholder="body { color: blue; }"></textarea>
+            <textarea id="css-code" placeholder="Escribe CSS..."></textarea>
         </div>
-
         <div class="editor-box">
-            <div class="label">JavaScript</div>
-            <textarea id="js-code" placeholder="console.log('Hola');"></textarea>
+            <div class="label">JAVASCRIPT</div>
+            <textarea id="js-code" placeholder="Escribe JS..."></textarea>
         </div>
     </div>
 
@@ -162,29 +174,15 @@
     function update() {
         const doc = preview.contentDocument || preview.contentWindow.document;
         doc.open();
-        doc.write(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <style>${cssEditor.value}</style>
-            </head>
-            <body>
-                ${htmlEditor.value}
-                <script>${jsEditor.value}<\/script>
-            </body>
-            </html>
-        `);
+        doc.write(`<html><head><style>${cssEditor.value}</style></head><body>${htmlEditor.value}<script>${jsEditor.value}<\/script></body></html>`);
         doc.close();
     }
 
-    // Escuchar cambios en los tres campos
-    htmlEditor.addEventListener('input', update);
-    cssEditor.addEventListener('input', update);
-    jsEditor.addEventListener('input', update);
+    [htmlEditor, cssEditor, jsEditor].forEach(el => el.addEventListener('input', update));
 
-    // Carga inicial de ejemplo
-    htmlEditor.value = "<h1>¡Bienvenido!</h1>\n<p>Prueba a cambiar el código a la izquierda.</p>";
-    cssEditor.value = "body { \n  font-family: sans-serif; \n  text-align: center; \n  padding-top: 50px; \n  color: #333;\n}";
+    // Código inicial de ejemplo
+    htmlEditor.value = "<h1>Hola desde mi móvil</h1>\n<p>Este editor es responsive.</p>";
+    cssEditor.value = "body { display: flex; justify-content: center; align-items: center; height: 80vh; color: #555; }";
     update();
 </script>
 
