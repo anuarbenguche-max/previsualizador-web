@@ -19,9 +19,9 @@
             --accent-blue: #0070ba; 
             --border-line: #2a2a2a;
             --border-radius: 8px;
-            /* Sombras sutiles */
-            --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.5);
-            --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.7);
+            /* [SOMBRAS NOTABLES] */
+            --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.6);
+            --shadow-strong: 0 15px 45px rgba(0, 0, 0, 0.8);
         }
 
         * { box-sizing: border-box; }
@@ -36,6 +36,7 @@
             height: 100vh;
         }
 
+        /* [ID: ENCABEZADO_WEB] */
         header {
             padding: 20px 30px;
             display: flex;
@@ -59,7 +60,7 @@
             align-items: center;
         }
 
-        /* [BOTONES] */
+        /* [ID: BOTONES_ACCION] */
         .btn {
             padding: 10px 22px;
             text-decoration: none;
@@ -72,23 +73,23 @@
             transition: all 0.2s ease;
             border: none;
             cursor: pointer;
-            box-shadow: var(--shadow-soft); /* Sombra en botones */
+            box-shadow: var(--shadow-soft);
         }
 
         .btn-download { background-color: #303136; color: var(--text-main); border: 1px solid var(--border-line); }
         .btn-paypal { background-color: var(--accent-blue); color: white; }
 
         .btn:hover { 
-            transform: translateY(-2px); 
+            transform: translateY(-3px); 
             box-shadow: var(--shadow-strong);
             filter: brightness(1.1);
         }
 
-        /* [LAYOUT PRINCIPAL] */
+        /* [ID: LAYOUT_PRINCIPAL] */
         .main-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px; /* Un poco más de espacio para que luzcan las sombras */
+            gap: 25px;
             padding: 0 30px 30px 30px;
             flex: 1;
             overflow: hidden;
@@ -101,7 +102,7 @@
             height: 100%;
         }
 
-        /* [CAJAS CON SOMBRAS] */
+        /* [ID: CAJAS_EDITORES] */
         .editor-box {
             background: var(--card-bg);
             border-radius: var(--border-radius);
@@ -110,12 +111,12 @@
             flex-direction: column;
             overflow: hidden;
             border: 1px solid var(--border-line);
-            box-shadow: var(--shadow-soft); /* Sombra sutil */
-            transition: box-shadow 0.3s ease;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
         }
 
         .editor-box:focus-within {
-            box-shadow: var(--shadow-strong); /* La sombra se vuelve más fuerte al escribir */
+            box-shadow: var(--shadow-strong);
             border-color: #444;
         }
 
@@ -146,17 +147,24 @@
             line-height: 1.6;
         }
 
-        /* [VISTA PREVIA CON SOMBRA] */
+        /* [ID: CAJA_PREVIEWER] */
         .preview-column {
-            background: white;
+            background: var(--card-bg); /* Inicia con el color de las cajas */
             border-radius: var(--border-radius);
             overflow: hidden;
             height: 100%;
             border: 1px solid var(--border-line);
             box-shadow: var(--shadow-soft);
+            transition: background 0.5s ease;
         }
 
-        iframe { width: 100%; height: 100%; border: none; }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            /* Mantiene transparencia inicial para heredar el fondo del contenedor */
+            background-color: transparent; 
+        }
 
         @media (max-width: 900px) {
             .main-layout { grid-template-columns: 1fr; overflow-y: auto; }
@@ -199,7 +207,7 @@
             <textarea id="js-code" placeholder="Escribe JS..."></textarea>
         </div>
     </div>
-    <div class="preview-column">
+    <div class="preview-column" id="preview-container">
         <iframe id="preview-iframe"></iframe>
     </div>
 </div>
@@ -209,11 +217,31 @@
     const cssEditor = document.getElementById('css-code');
     const jsEditor = document.getElementById('js-code');
     const preview = document.getElementById('preview-iframe');
+    const previewContainer = document.getElementById('preview-container');
 
     function update() {
         const doc = preview.contentDocument || preview.contentWindow.document;
+        
+        // Si hay contenido, cambiamos el fondo a blanco por defecto 
+        // para que el usuario vea su diseño, a menos que él defina un fondo en CSS.
+        if (htmlEditor.value || cssEditor.value) {
+            previewContainer.style.background = "white";
+        }
+
         doc.open();
-        doc.write(`<!DOCTYPE html><html><head><style>${cssEditor.value}</style></head><body>${htmlEditor.value}<script>${jsEditor.value}<\/script></body></html>`);
+        doc.write(`
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <style>${cssEditor.value}</style>
+            </head>
+            <body>
+                ${htmlEditor.value}
+                <script>${jsEditor.value}<\/script>
+            </body>
+            </html>
+        `);
         doc.close();
     }
 
@@ -230,9 +258,13 @@
         URL.revokeObjectURL(url);
     }
 
-    htmlEditor.value = "<h1>Hola Anuar</h1>\n<p>Mira las sombras en los bordes de estas cajas.</p>";
-    cssEditor.value = "body { font-family: 'Lato', sans-serif; text-align: center; padding-top: 50px; color: #333; }";
-    update();
+    // [MENSAJE: HOLA MUNDO]
+    htmlEditor.value = "<h1>Hola mundo</h1>";
+    cssEditor.value = "body {\n  font-family: 'Lato', sans-serif;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 80vh;\n  color: #333;\n}";
+    
+    // Al inicio no llamamos a update() para mantener el color gris, 
+    // o puedes llamarlo y el CSS inicial pondrá el fondo blanco.
+    update(); 
 </script>
 
 </body>
