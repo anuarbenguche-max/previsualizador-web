@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previsualizador Todo-en-Uno</title>
+    <style>
+        /* Estilos de la interfaz */
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            background: #1e1e1e;
+        }
+        .header { 
+            background: #252526; 
+            color: #d4d4d4; 
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+        .main-container { 
+            display: flex; 
+            flex: 1; 
+            overflow: hidden; 
+        }
+        /* El editor a la izquierda */
+        #editor { 
+            width: 40%; 
+            background: #1e1e1e; 
+            color: #9cdcfe; 
+            padding: 15px; 
+            font-family: 'Consolas', 'Monaco', monospace; 
+            font-size: 14px;
+            border: none; 
+            border-right: 2px solid #333;
+            outline: none;
+            resize: none;
+        }
+        /* La vista previa a la derecha */
+        #preview { 
+            width: 60%; 
+            background: white; 
+            border: none; 
+        }
+        .btn-donate { 
+            background: #f0ad4e; 
+            color: #000; 
+            padding: 8px 15px; 
+            text-decoration: none; 
+            border-radius: 4px; 
+            font-weight: bold;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+        .btn-donate:hover { background: #ffc107; }
+        .label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <span class="label">Pega tu código completo (HTML + CSS)</span>
+    <a href="https://www.paypal.me/TU_USUARIO" target="_blank" class="btn-donate">🎁 Apoyar proyecto</a>
+</div>
+
+<div class="main-container">
+    <textarea id="editor" placeholder="<style> body { background: gold; } </style> <h1>¡Hola Mundo!</h1>"></textarea>
+    <iframe id="preview"></iframe>
+</div>
+
+<script>
+    const editor = document.getElementById('editor');
+    const preview = document.getElementById('preview');
+
+    function update() {
+        const content = editor.value;
+        const display = preview.contentDocument || preview.contentWindow.document;
+        
+        display.open();
+        // Escribe directamente lo que el usuario pega
+        display.write(content);
+        display.close();
+    }
+
+    // Actualiza mientras escribes o apenas pegas el código
+    editor.addEventListener('input', update);
+
+    // Código de ejemplo inicial
+    editor.value = `<style>\n  body { font-family: sans-serif; text-align: center; padding-top: 50px; }\n  h1 { color: #0070ba; }\n</style>\n\n<h1>¡Pega tu código aquí!</h1>\n<p>Todo lo que escribas se verá a la derecha.</p>`;
+    update();
+</script>
+
+</body>
+</html>
