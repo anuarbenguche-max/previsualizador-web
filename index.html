@@ -23,24 +23,32 @@
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
         header { 
-            padding: 10px 20px; 
+            padding: 12px 25px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
             border-bottom: 1px solid var(--border-line);
-            gap: 10px;
+            gap: 15px;
         }
         .brand { display: flex; flex-direction: column; }
-        h1 { font-size: 1rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
-        .storage-warning { font-size: 0.65rem; color: var(--text-dim); font-style: italic; font-weight: 500; opacity: 0.9; margin-top: 1px; }
+        h1 { font-size: 1.1rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
+        
+        /* ADVERTENCIA MUCHO MÁS LEGIBLE */
+        .storage-warning { 
+            font-size: 0.8rem; 
+            color: #ccc; 
+            font-style: italic; 
+            font-weight: 500;
+            margin-top: 4px;
+        }
         
         .actions-group { display: flex; gap: 8px; align-items: center; }
 
         .btn { 
-            padding: 6px 12px; 
+            padding: 6px 14px; 
             border-radius: var(--border-radius); 
             font-weight: 600; 
-            font-size: 0.65rem; 
+            font-size: 0.7rem; 
             border: none; 
             cursor: pointer; 
             color: white; 
@@ -48,41 +56,39 @@
             display: flex; 
             align-items: center; 
             gap: 6px;
-            height: 30px;
+            height: 32px;
         }
         .btn-download { background-color: #272a34; border: 1px solid var(--border-line); color: var(--text-dim); }
         .btn-paypal { background-color: var(--accent-blue); }
-        .btn-clear { background: transparent; color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.2); padding: 6px 8px; }
-        .btn-clear:hover { background-color: var(--accent-red); color: white; }
+        .btn-clear { background: transparent; color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.3); }
 
-        .main-layout { display: flex; flex: 1; padding: 12px; gap: 0; overflow: hidden; }
-        .editors-column { display: flex; flex-direction: column; gap: 10px; height: 100%; width: 50%; min-width: 300px; }
+        .main-layout { display: flex; flex: 1; padding: 15px; gap: 0; overflow: hidden; }
+        .editors-column { display: flex; flex-direction: column; gap: 12px; height: 100%; width: 50%; min-width: 300px; }
         
-        .resizer { width: 12px; cursor: col-resize; display: flex; justify-content: center; align-items: center; }
-        .resizer::after { content: ""; width: 2px; height: 40px; background: var(--border-line); border-radius: 2px; }
+        .resizer { width: 14px; cursor: col-resize; display: flex; justify-content: center; align-items: center; }
+        .resizer::after { content: ""; width: 2px; height: 50px; background: var(--border-line); border-radius: 2px; }
 
         .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); }
-        .editor-header { background: var(--header-dark); padding: 6px 12px; border-bottom: 1px solid var(--border-line); font-size: 0.5rem; font-weight: 800; color: var(--text-dim); letter-spacing: 1.5px; }
+        .editor-header { background: var(--header-dark); padding: 8px 15px; border-bottom: 1px solid var(--border-line); font-size: 0.6rem; font-weight: 800; color: var(--text-dim); letter-spacing: 1.5px; }
 
-        .editor-container { position: relative; flex: 1; display: flex; overflow: hidden; }
-        .line-numbers { width: 35px; padding: 12px 5px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4b5563; background: #0c0d11; border-right: 1px solid var(--border-line); user-select: none; line-height: 1.6; }
+        .editor-container { position: relative; flex: 1; display: flex; }
+        .line-numbers { width: 40px; padding: 15px 5px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #555; background: #0c0d11; border-right: 1px solid var(--border-line); user-select: none; line-height: 1.6; }
 
         textarea { 
             background: transparent; border: none; color: var(--code-text); 
-            font-family: 'JetBrains Mono', monospace; font-size: 12px; 
-            flex: 1; padding: 12px; resize: none; outline: none; 
-            line-height: 1.6; tab-size: 2; white-space: pre; overflow: auto;
+            font-family: 'JetBrains Mono', monospace; font-size: 13px; 
+            flex: 1; padding: 15px; resize: none; outline: none; 
+            line-height: 1.6; tab-size: 2; white-space: pre;
         }
 
         .preview-side { flex: 1; height: 100%; display: flex; flex-direction: column; border-radius: var(--border-radius); border: 1px solid var(--border-line); overflow: hidden; }
-        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 12px; border-bottom: 1px solid var(--border-line); justify-content: space-between; height: 35px; }
+        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 15px; border-bottom: 1px solid var(--border-line); justify-content: space-between; height: 40px; }
         .tabs-wrapper { display: flex; align-items: center; overflow-x: auto; flex: 1; }
-        .tab { padding: 0 12px; color: var(--text-dim); font-size: 0.65rem; cursor: pointer; display: flex; align-items: center; gap: 6px; border-bottom: 2px solid transparent; height: 35px; }
+        .tab { padding: 0 15px; color: var(--text-dim); font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; height: 40px; }
         .tab.active { color: white; border-bottom: 2px solid var(--accent-blue); background: rgba(255,255,255,0.03); }
-        .close-tab { font-size: 9px; opacity: 0.3; padding: 2px; }
-        .add-tab { font-size: 1.2rem; color: var(--text-dim); cursor: pointer; padding: 0 10px; }
+        .add-tab { font-size: 1.5rem; color: var(--text-dim); cursor: pointer; padding: 0 15px; }
 
-        .eye-care-note { font-size: 0.6rem; font-style: italic; color: var(--text-dim); margin-right: 8px; }
+        .eye-care-note { font-size: 0.7rem; font-style: italic; color: var(--text-dim); margin-right: 10px; }
         iframe { width: 100%; height: 100%; border: none; background: white; }
 
         @media (max-width: 900px) { .main-layout { flex-direction: column; } .editors-column, .preview-side { width: 100%; min-height: 400px; } .resizer { display: none; } }
@@ -140,7 +146,7 @@
             <div class="controls-right" style="display:flex; align-items:center;">
                 <span class="eye-care-note" id="eye-note"></span>
                 <div onclick="toggleTheme()" style="cursor:pointer; display:flex;">
-                    <svg id="theme-icon" width="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+                    <svg id="theme-icon" width="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
                 </div>
             </div>
         </div>
@@ -151,15 +157,19 @@
 <script>
     const isSpanish = (navigator.language || navigator.userLanguage).startsWith('es');
     const lang = isSpanish ? {
-        warn: "Proyectos ligeros / Light projects",
+        warn: "Proyectos ligeros / Light projects only",
         clearMsg: "¿Borrar todo?",
         dl: "DESCARGAR", donate: "DONAR", note: "Modo oscuro:", proj: "Proyecto",
-        html: "<h1>Hola Mundo</h1>", css: "body { text-align: center; padding-top: 50px; }", js: "console.log('Listo');"
+        html: "<h1>¡Hola Mundo!</h1>\n<button id='btn'>Haz clic aquí</button>", 
+        css: "body { text-align: center; padding-top: 50px; }\nbutton { padding: 10px; cursor: pointer; }", 
+        js: "document.getElementById('btn').onclick = () => alert('¡Funciona!');"
     } : {
-        warn: "Light projects only",
+        warn: "Light projects only / Proyectos ligeros",
         clearMsg: "Clear all?",
         dl: "DOWNLOAD", donate: "DONATE", note: "Dark mode:", proj: "Project",
-        html: "<h1>Hello World</h1>", css: "body { text-align: center; padding-top: 50px; }", js: "console.log('Ready');"
+        html: "<h1>Hello World!</h1>\n<button id='btn'>Click me</button>", 
+        css: "body { text-align: center; padding-top: 50px; }\nbutton { padding: 10px; cursor: pointer; }", 
+        js: "document.getElementById('btn').onclick = () => alert('It works!');"
     };
 
     document.getElementById('storage-warning').innerText = lang.warn;
@@ -167,8 +177,8 @@
     document.getElementById('txt-donate').innerText = lang.donate;
     document.getElementById('eye-note').innerText = lang.note;
 
-    let tabs = JSON.parse(localStorage.getItem('tabs_final')) || [];
-    let activeTabId = localStorage.getItem('active_final') || null;
+    let tabs = JSON.parse(localStorage.getItem('tabs_v6')) || [];
+    let activeTabId = localStorage.getItem('active_v6') || null;
     let isDarkMode = true;
 
     function updateLines(type) {
@@ -189,7 +199,7 @@
             tab.html = document.getElementById('html-code').value;
             tab.css = document.getElementById('css-code').value;
             tab.js = document.getElementById('js-code').value;
-            localStorage.setItem('tabs_final', JSON.stringify(tabs));
+            localStorage.setItem('tabs_v6', JSON.stringify(tabs));
             updateIframe();
         }
     }
@@ -201,7 +211,7 @@
         const color = isDarkMode ? "#e3e3e3" : "#333";
         const doc = document.getElementById('preview-iframe').contentDocument;
         doc.open();
-        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;font-family:sans-serif;}${tab.css}</style></head><body><div>${tab.html}</div><script>${tab.js}<\/script></body></html>`);
+        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;font-family:sans-serif;}${tab.css}</style></head><body>${tab.html}<script>${tab.js}<\/script></body></html>`);
         doc.close();
     }
 
@@ -213,6 +223,11 @@
             el.className = `tab ${tab.id == activeTabId ? 'active' : ''}`;
             el.innerHTML = `<span>${tab.name}</span><div class='close-tab' onclick='closeTab(${tab.id}, event)'>✕</div>`;
             el.onclick = () => switchTab(tab.id);
+            el.ondblclick = () => {
+                const s = el.querySelector('span'); s.contentEditable = true; s.focus();
+                document.execCommand('selectAll', false, null);
+                s.onblur = () => { s.contentEditable = false; tab.name = s.innerText.trim() || "Project"; localStorage.setItem('tabs_v6', JSON.stringify(tabs)); renderTabs(); };
+            };
             list.appendChild(el);
         });
         if (tabs.length < 5) {
@@ -228,7 +243,7 @@
 
     function switchTab(id) {
         activeTabId = id;
-        localStorage.setItem('active_final', id);
+        localStorage.setItem('active_v6', id);
         const tab = tabs.find(t => t.id == id);
         ['html', 'css', 'js'].forEach(type => {
             document.getElementById(`${type}-code`).value = tab[type];
@@ -247,7 +262,6 @@
     function clearAllHistory() { if(confirm(lang.clearMsg)) { localStorage.clear(); location.reload(); } }
     function toggleTheme() { isDarkMode = !isDarkMode; updateIframe(); }
     
-    // Resizer
     const resizer = document.getElementById('drag-bar');
     const leftSide = document.getElementById('left-side');
     resizer.addEventListener('mousedown', () => {
@@ -260,7 +274,6 @@
         document.addEventListener('mouseup', stopDrag);
     });
 
-    // Soporte Tab
     document.querySelectorAll('textarea').forEach(txt => {
         txt.addEventListener('keydown', function(e) {
             if(e.key === 'Tab') {
