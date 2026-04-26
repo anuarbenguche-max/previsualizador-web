@@ -13,89 +13,124 @@
             --text-main: #f0f1f5;
             --text-dim: #9ca3af;
             --code-text: #a1a1aa;
-            --accent-blue: #3b82f6; 
+            --accent-blue: #0070ba; 
             --accent-red: #ef4444;
             --border-line: #22252e;
             --border-radius: 6px;
-            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
         * { box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        header { padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-line); }
-        h1 { font-size: 1.1rem; font-weight: 800; margin: 0; letter-spacing: -0.8px; }
+        /* [HEADER RESPONSIVO] */
+        header { 
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--border-line);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .brand { display: flex; flex-direction: column; }
+        h1 { font-size: 1rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
+        .storage-warning { font-size: 0.55rem; color: var(--text-dim); font-style: italic; opacity: 0.6; }
         
-        .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-        .actions-group { display: flex; gap: 10px; }
+        .actions-group { display: flex; gap: 8px; align-items: center; }
 
-        .btn { padding: 8px 16px; border-radius: var(--border-radius); font-weight: 600; font-size: 0.75rem; border: none; cursor: pointer; color: white; transition: 0.2s; }
+        /* [BOTONES PEQUEÑOS Y ELEGANTES] */
+        .btn { 
+            padding: 6px 12px; 
+            border-radius: var(--border-radius); 
+            font-weight: 600; 
+            font-size: 0.65rem; 
+            border: none; 
+            cursor: pointer; 
+            color: white; 
+            transition: 0.2s; 
+            display: flex; 
+            align-items: center; 
+            gap: 6px;
+            height: 30px;
+        }
         .btn-download { background-color: #272a34; border: 1px solid var(--border-line); color: var(--text-dim); }
         .btn-paypal { background-color: var(--accent-blue); }
-
-        .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; flex: 1; overflow: hidden; }
-
-        .editors-column { display: flex; flex-direction: column; gap: 12px; height: 100%; }
-        .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); }
-        .editor-header { background: var(--header-dark); padding: 8px 12px; border-bottom: 1px solid var(--border-line); }
-        .label { font-size: 0.55rem; color: var(--text-dim); font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
         
-        textarea { background: transparent; border: none; color: var(--code-text); font-family: 'JetBrains Mono', monospace; font-size: 13px; flex: 1; padding: 15px; resize: none; outline: none; line-height: 1.7; }
+        /* Botón Basura Solo Icono */
+        .btn-clear { 
+            background: transparent; 
+            color: var(--accent-red); 
+            border: 1px solid rgba(239, 68, 68, 0.2); 
+            padding: 6px 8px;
+        }
+        .btn-clear:hover { background-color: var(--accent-red); color: white; }
+        
+        .btn:hover:not(.btn-clear) { transform: translateY(-1px); filter: brightness(1.1); }
+
+        /* [LAYOUT] */
+        .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; flex: 1; overflow: hidden; }
+        .editors-column { display: flex; flex-direction: column; gap: 10px; height: 100%; }
+        .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); }
+        .editor-header { background: var(--header-dark); padding: 6px 12px; border-bottom: 1px solid var(--border-line); }
+        .label { font-size: 0.5rem; color: var(--text-dim); font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; }
+        textarea { background: transparent; border: none; color: var(--code-text); font-family: 'JetBrains Mono', monospace; font-size: 12px; flex: 1; padding: 12px; resize: none; outline: none; line-height: 1.6; }
 
         .preview-container { display: flex; flex-direction: column; height: 100%; border-radius: var(--border-radius); border: 1px solid var(--border-line); overflow: hidden; position: relative; }
-        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 15px; border-bottom: 1px solid var(--border-line); justify-content: space-between; }
-        
+        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 12px; border-bottom: 1px solid var(--border-line); justify-content: space-between; height: 35px; }
         .tabs-wrapper { display: flex; align-items: center; overflow-x: auto; flex: 1; }
-        .tab { padding: 10px 15px; color: var(--text-dim); font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; }
+        .tab { padding: 0 12px; color: var(--text-dim); font-size: 0.65rem; cursor: pointer; display: flex; align-items: center; gap: 6px; border-bottom: 2px solid transparent; height: 35px; }
         .tab.active { color: white; border-bottom: 2px solid var(--accent-blue); background: rgba(255,255,255,0.03); }
-        
-        .close-tab { font-size: 10px; opacity: 0.3; padding: 2px 4px; border-radius: 3px; transition: 0.2s; }
-        .close-tab:hover { background: var(--accent-red); color: white; opacity: 1; }
-        
-        .add-tab { font-size: 1.4rem; color: var(--text-dim); cursor: pointer; padding: 0 12px; transition: 0.2s; }
-        .add-tab:hover { color: white; transform: scale(1.1); }
+        .close-tab { font-size: 9px; opacity: 0.3; padding: 2px; }
+        .add-tab { font-size: 1.2rem; color: var(--text-dim); cursor: pointer; padding: 0 10px; }
 
-        .controls-right { display: flex; align-items: center; gap: 12px; }
-        .eye-care-note { font-size: 0.65rem; font-style: italic; color: var(--text-dim); }
-
+        .eye-care-note { font-size: 0.6rem; font-style: italic; color: var(--text-dim); margin-right: 8px; }
         iframe { width: 100%; height: 100%; border: none; }
+
+        @media (max-width: 900px) { 
+            .main-layout { grid-template-columns: 1fr; overflow-y: auto; } 
+            .preview-container { min-height: 400px; }
+            header { justify-content: center; text-align: center; }
+            .brand { width: 100%; align-items: center; }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Free Online Code Previewer</h1>
-    <div class="header-right">
-        <div class="actions-group">
-            <button class="btn btn-download" id="btn-download" onclick="downloadCurrentTab()"></button>
-            <a href="https://paypal.me/abenguche" target="_blank" class="btn btn-paypal" id="btn-paypal"></a>
-        </div>
+    <div class="brand">
+        <h1>Free Online Code Previewer</h1>
+        <span class="storage-warning" id="storage-warning"></span>
+    </div>
+    <div class="actions-group">
+        <button class="btn btn-clear" onclick="clearAllHistory()" id="btn-clear" title="Clear History">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        </button>
+        
+        <button class="btn btn-download" id="btn-download" onclick="downloadCurrentTab()"></button>
+        
+        <a href="https://paypal.me/abenguche" target="_blank" class="btn btn-paypal" id="btn-paypal">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
+                <path d="M20.067 8.478c.492.47.662 1.137.492 1.81-.777 3.078-2.926 4.846-6.103 4.846H11.6l-.793 4.19a.448.448 0 0 1-.44.365h-3.46a.18.18 0 0 1-.177-.213l2.52-13.431a.448.448 0 0 1 .44-.365h4.582c2.08 0 3.513.473 4.35 1.416.322.36.508.762.585 1.192.077.43.04.881-.11 1.39a4.73 4.73 0 0 1-.11 1.39zm-5.881.553c0-.105-.085-.19-.19-.19h-2.122l-.565 3.03h1.928c1.102 0 1.825-.568 2.062-1.503.14-.548.048-.962-.276-1.183a.952.952 0 0 0-.837-.154z"/>
+            </svg>
+            <span id="txt-donate"></span>
+        </a>
     </div>
 </header>
 
 <div class="main-layout">
     <div class="editors-column">
-        <div class="editor-box">
-            <div class="editor-header"><div class="label">HTML</div></div>
-            <textarea id="html-code" oninput="saveAndPreview()"></textarea>
-        </div>
-        <div class="editor-box">
-            <div class="editor-header"><div class="label">CSS</div></div>
-            <textarea id="css-code" oninput="saveAndPreview()"></textarea>
-        </div>
-        <div class="editor-box">
-            <div class="editor-header"><div class="label">JAVASCRIPT</div></div>
-            <textarea id="js-code" oninput="saveAndPreview()"></textarea>
-        </div>
+        <div class="editor-box"><div class="editor-header"><div class="label">HTML</div></div><textarea id="html-code" oninput="saveAndPreview()"></textarea></div>
+        <div class="editor-box"><div class="editor-header"><div class="label">CSS</div></div><textarea id="css-code" oninput="saveAndPreview()"></textarea></div>
+        <div class="editor-box"><div class="editor-header"><div class="label">JS</div></div><textarea id="js-code" oninput="saveAndPreview()"></textarea></div>
     </div>
 
     <div class="preview-container" id="preview-wrapper">
         <div class="tabs-bar">
             <div class="tabs-wrapper" id="tabs-list"></div>
-            <div class="controls-right">
+            <div class="controls-right" style="display:flex; align-items:center;">
                 <span class="eye-care-note" id="eye-note"></span>
-                <div class="theme-btn" onclick="toggleTheme()" style="cursor:pointer">
-                    <svg id="theme-icon" width="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+                <div onclick="toggleTheme()" style="cursor:pointer; display:flex;">
+                    <svg id="theme-icon" width="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
                 </div>
             </div>
         </div>
@@ -106,13 +141,18 @@
 <script>
     const isSpanish = (navigator.language || navigator.userLanguage).startsWith('es');
     const lang = isSpanish ? {
-        dl: "DESCARGAR .HTML", donate: "DONAR", note: "Cuidamos tus ojos / Dark mode:", proj: "Proyecto", hello: "<h1>Hola mundo</h1>"
+        warn: "Proyectos ligeros / Light projects",
+        clearMsg: "¿Borrar todo el historial?",
+        dl: "DESCARGAR", donate: "DONAR", note: "Modo oscuro:", proj: "Proyecto", hello: "<h1>Hola mundo</h1>"
     } : {
-        dl: "DOWNLOAD .HTML", donate: "DONATE", note: "Protecting your eyes / Modo oscuro:", proj: "Project", hello: "<h1>Hello world</h1>"
+        warn: "Light projects only",
+        clearMsg: "Delete all history?",
+        dl: "DOWNLOAD", donate: "DONATE", note: "Dark mode:", proj: "Project", hello: "<h1>Hello world</h1>"
     };
 
+    document.getElementById('storage-warning').innerText = lang.warn;
     document.getElementById('btn-download').innerText = lang.dl;
-    document.getElementById('btn-paypal').innerText = lang.donate;
+    document.getElementById('txt-donate').innerText = lang.donate;
     document.getElementById('eye-note').innerText = lang.note;
 
     let tabs = JSON.parse(localStorage.getItem('previewer_tabs')) || [];
@@ -137,34 +177,9 @@
         const doc = preview.contentDocument || preview.contentWindow.document;
         const bg = isDarkMode ? "#1e1f20" : "#f5f5f5";
         const color = isDarkMode ? "#e3e3e3" : "#333";
-        
         document.getElementById('preview-wrapper').style.background = bg;
-
         doc.open();
-        doc.write(`
-            <html>
-            <head>
-                <style>
-                    body { 
-                        background: ${bg}; 
-                        color: ${color}; 
-                        margin: 0; 
-                        min-height: 100vh; 
-                        display: flex; 
-                        justify-content: center; 
-                        align-items: center; 
-                        font-family: 'Inter', sans-serif;
-                        transition: background 0.3s, color 0.3s;
-                    }
-                    ${tab.css}
-                </style>
-            </head>
-            <body>
-                <div>${tab.html}</div>
-                <script>${tab.js}<\/script>
-            </body>
-            </html>
-        `);
+        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;font-family:'Inter',sans-serif;transition:0.3s;}${tab.css}</style></head><body>${tab.html}<script>${tab.js}<\/script></body></html>`);
         doc.close();
     }
 
@@ -174,31 +189,18 @@
         tabs.forEach(tab => {
             const el = document.createElement('div');
             el.className = `tab ${tab.id == activeTabId ? 'active' : ''}`;
-            el.innerHTML = `<span onblur="updateTabName(${tab.id}, this)">${tab.name}</span><div class="close-tab" onclick="closeTab(${tab.id}, event)">✕</div>`;
+            el.innerHTML = `<span>${tab.name}</span><div class="close-tab" onclick="closeTab(${tab.id}, event)">✕</div>`;
             el.onclick = () => switchTab(tab.id);
-            el.ondblclick = (e) => {
-                const span = el.querySelector('span');
-                span.contentEditable = true;
-                span.focus();
+            el.ondblclick = () => {
+                const s = el.querySelector('span'); s.contentEditable = true; s.focus();
                 document.execCommand('selectAll', false, null);
+                s.onblur = () => { s.contentEditable = false; tab.name = s.innerText.trim() || "Project"; localStorage.setItem('previewer_tabs', JSON.stringify(tabs)); renderTabs(); };
             };
             list.appendChild(el);
         });
         if (tabs.length < 5) {
-            const add = document.createElement('div');
-            add.className = "add-tab";
-            add.innerText = "+";
-            add.onclick = createNewTab;
-            list.appendChild(add);
+            const add = document.createElement('div'); add.className = "add-tab"; add.innerText = "+"; add.onclick = createNewTab; list.appendChild(add);
         }
-    }
-
-    function updateTabName(id, el) {
-        el.contentEditable = false;
-        const tab = tabs.find(t => t.id == id);
-        if (tab) tab.name = el.innerText.trim() || "Project";
-        localStorage.setItem('previewer_tabs', JSON.stringify(tabs));
-        renderTabs();
     }
 
     function createNewTab() {
@@ -221,23 +223,22 @@
     function closeTab(id, e) {
         e.stopPropagation();
         tabs = tabs.filter(t => t.id != id);
-        if (tabs.length === 0) createNewTab();
-        else switchTab(tabs[0].id);
+        if (tabs.length === 0) createNewTab(); else switchTab(tabs[0].id);
     }
 
-    function toggleTheme() {
-        isDarkMode = !isDarkMode;
-        updateIframe();
+    function clearAllHistory() {
+        if (confirm(lang.clearMsg)) {
+            localStorage.clear();
+            location.reload();
+        }
     }
+
+    function toggleTheme() { isDarkMode = !isDarkMode; updateIframe(); }
 
     function downloadCurrentTab() {
         const tab = tabs.find(t => t.id == activeTabId);
         const code = `<!DOCTYPE html><html><head><style>body{background:${isDarkMode?'#1e1f20':'#f5f5f5'};color:${isDarkMode?'#e3e3e3':'#333'};display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;font-family:sans-serif;}${tab.css}</style></head><body>${tab.html}<script>${tab.js}<\/script></body></html>`;
-        const blob = new Blob([code], {type: 'text/html'});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `${tab.name}.html`;
-        a.click();
+        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([code], {type: 'text/html'})); a.download = `${tab.name}.html`; a.click();
     }
 
     if (tabs.length === 0) createNewTab(); else switchTab(activeTabId || tabs[0].id);
