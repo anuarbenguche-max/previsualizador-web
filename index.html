@@ -4,15 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anuar Code Previewer</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+
     <style>
+        /* [COLORES Y VARIABLES] */
         :root {
             --bg-color: #131314;
             --card-bg: #1e1f20;
+            --header-dark: #0f0f0f;
             --text-main: #e3e3e3;
             --text-dim: #b4b4b4;
-            --code-text: #a0a0a0; /* Gris oscuro para el código */
-            --accent-blue: #0070ba;
+            --code-text: #a0a0a0;
+            --accent-blue: #0070ba; /* Azul PayPal */
+            --border-line: #2a2a2a;
             --border-radius: 8px; /* Redondez sutil */
         }
 
@@ -28,6 +33,7 @@
             height: 100vh;
         }
 
+        /* [ENCABEZADO PRINCIPAL] */
         header {
             padding: 20px 30px;
             display: flex;
@@ -39,15 +45,16 @@
 
         h1 {
             font-size: 1.5rem;
-            font-weight: 900; /* Fuente gruesa */
+            font-weight: 900;
             margin: 0;
             letter-spacing: -0.5px;
         }
 
+        /* [BOTÓN DONACIÓN] */
         .btn-paypal {
             background-color: var(--accent-blue);
             color: white;
-            padding: 12px 20px;
+            padding: 12px 24px;
             text-decoration: none;
             border-radius: var(--border-radius);
             font-weight: 700;
@@ -55,22 +62,25 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: transform 0.2s;
+            transition: 0.3s;
         }
 
-        .btn-paypal:hover { transform: scale(1.02); }
+        .btn-paypal:hover {
+            transform: scale(1.05);
+            background-color: #005ea6;
+        }
 
-        /* Contenedor Principal Responsive */
+        /* [LAYOUT - CONTENEDOR DE TRABAJO] */
         .main-layout {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Dos columnas en PC */
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
             padding: 0 30px 30px 30px;
             flex: 1;
             overflow: hidden;
         }
 
-        /* Columna de Editores */
+        /* [COLUMNA DE EDITORES] */
         .editors-column {
             display: flex;
             flex-direction: column;
@@ -81,39 +91,48 @@
         .editor-box {
             background: var(--card-bg);
             border-radius: var(--border-radius);
-            padding: 15px;
-            flex: 1; /* Todos el mismo tamaño */
+            flex: 1;
             display: flex;
             flex-direction: column;
-            min-height: 150px;
+            overflow: hidden;
+            border: 1px solid var(--border-line);
+        }
+
+        /* [CABECERAS DE CAJAS HTML/CSS/JS] */
+        .editor-header {
+            background: var(--header-dark);
+            padding: 10px 15px;
+            border-bottom: 2px solid var(--border-line);
         }
 
         .label {
             font-size: 0.7rem;
             color: var(--text-dim);
-            margin-bottom: 10px;
             font-weight: 900;
             letter-spacing: 1.5px;
+            text-transform: uppercase;
         }
 
         textarea {
             background: transparent;
             border: none;
             color: var(--code-text);
-            font-family: 'Consolas', monospace;
+            font-family: 'Consolas', 'Monaco', monospace;
             font-size: 14px;
             flex: 1;
+            padding: 15px;
             resize: none;
             outline: none;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
-        /* Vista Previa */
+        /* [VISTA PREVIA] */
         .preview-column {
             background: white;
             border-radius: var(--border-radius);
             overflow: hidden;
             height: 100%;
+            border: 1px solid var(--border-line);
         }
 
         iframe {
@@ -122,15 +141,16 @@
             border: none;
         }
 
-        /* RESPONSIVE: Ajustes para tablets y móviles */
+        /* [RESPONSIVE - ADAPTACIÓN MÓVIL] */
         @media (max-width: 900px) {
             .main-layout {
-                grid-template-columns: 1fr; /* Una sola columna */
+                grid-template-columns: 1fr;
                 overflow-y: auto;
             }
             body { overflow-y: auto; height: auto; }
-            .preview-column { min-height: 400px; order: -1; } /* Vista previa arriba en móvil */
+            .preview-column { min-height: 450px; order: -1; }
             .editors-column { height: auto; }
+            .editor-box { min-height: 200px; }
         }
     </style>
 </head>
@@ -138,6 +158,7 @@
 
 <header>
     <h1>Anuar Code Previewer</h1>
+    
     <a href="https://paypal.me/abenguche" target="_blank" class="btn-paypal">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path></svg>
         DONAR CON PAYPAL
@@ -145,24 +166,30 @@
 </header>
 
 <div class="main-layout">
+    
     <div class="editors-column">
+        
         <div class="editor-box">
-            <div class="label">HTML</div>
-            <textarea id="html-code" placeholder="Escribe HTML..."></textarea>
+            <div class="editor-header"><div class="label">HTML</div></div>
+            <textarea id="html-code" placeholder="<div>Hola Mundo</div>"></textarea>
         </div>
+
         <div class="editor-box">
-            <div class="label">CSS</div>
-            <textarea id="css-code" placeholder="Escribe CSS..."></textarea>
+            <div class="editor-header"><div class="label">CSS</div></div>
+            <textarea id="css-code" placeholder="h1 { color: red; }"></textarea>
         </div>
+
         <div class="editor-box">
-            <div class="label">JAVASCRIPT</div>
-            <textarea id="js-code" placeholder="Escribe JS..."></textarea>
+            <div class="editor-header"><div class="label">JAVASCRIPT</div></div>
+            <textarea id="js-code" placeholder="console.log('Script activo');"></textarea>
         </div>
+
     </div>
 
     <div class="preview-column">
         <iframe id="preview-iframe"></iframe>
     </div>
+
 </div>
 
 <script>
@@ -174,15 +201,30 @@
     function update() {
         const doc = preview.contentDocument || preview.contentWindow.document;
         doc.open();
-        doc.write(`<html><head><style>${cssEditor.value}</style></head><body>${htmlEditor.value}<script>${jsEditor.value}<\/script></body></html>`);
+        doc.write(`
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <style>${cssEditor.value}</style>
+            </head>
+            <body>
+                ${htmlEditor.value}
+                <script>${jsEditor.value}<\/script>
+            </body>
+            </html>
+        `);
         doc.close();
     }
 
-    [htmlEditor, cssEditor, jsEditor].forEach(el => el.addEventListener('input', update));
+    // Escuchar cada tecla presionada
+    [htmlEditor, cssEditor, jsEditor].forEach(editor => {
+        editor.addEventListener('input', update);
+    });
 
-    // Código inicial de ejemplo
-    htmlEditor.value = "<h1>Hola desde mi móvil</h1>\n<p>Este editor es responsive.</p>";
-    cssEditor.value = "body { display: flex; justify-content: center; align-items: center; height: 80vh; color: #555; }";
+    // Carga inicial (Ejemplo)
+    htmlEditor.value = "<h1>Anuar Code Previewer</h1>\n<p>Empieza a editar para ver la magia.</p>";
+    cssEditor.value = "body { \n  display: flex; \n  flex-direction: column;\n  justify-content: center; \n  align-items: center; \n  height: 90vh; \n  font-family: sans-serif;\n  color: #333;\n  background: #fdfdfd;\n}";
+    
     update();
 </script>
 
