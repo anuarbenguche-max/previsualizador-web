@@ -22,6 +22,7 @@
         * { box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
+        /* [HEADER] */
         header { 
             padding: 10px 20px; 
             display: flex; 
@@ -30,6 +31,7 @@
             border-bottom: 1px solid var(--border-line);
             flex-wrap: wrap;
             gap: 10px;
+            z-index: 10;
         }
         .brand { display: flex; flex-direction: column; }
         h1 { font-size: 1rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
@@ -57,8 +59,50 @@
         .btn-clear:hover { background-color: var(--accent-red); color: white; }
         .btn:hover:not(.btn-clear) { transform: translateY(-1px); filter: brightness(1.1); }
 
-        .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; flex: 1; overflow: hidden; }
-        .editors-column { display: flex; flex-direction: column; gap: 10px; height: 100%; }
+        /* [LAYOUT CON RESIZER] */
+        .main-layout { 
+            display: flex; 
+            flex-direction: row;
+            padding: 12px; 
+            flex: 1; 
+            overflow: hidden; 
+            gap: 0;
+        }
+
+        .editors-column { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+            height: 100%;
+            min-width: 200px;
+            width: 50%; /* Inicial */
+        }
+
+        /* La barra para arrastrar */
+        .resizer {
+            width: 12px;
+            cursor: col-resize;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s;
+        }
+        .resizer:hover { background: rgba(59, 130, 246, 0.1); }
+        .resizer::after {
+            content: "";
+            width: 2px;
+            height: 30px;
+            background: var(--border-line);
+            border-radius: 2px;
+        }
+
+        .preview-side {
+            flex: 1;
+            min-width: 200px;
+            height: 100%;
+        }
+
         .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); }
         .editor-header { background: var(--header-dark); padding: 6px 12px; border-bottom: 1px solid var(--border-line); }
         .label { font-size: 0.5rem; color: var(--text-dim); font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; }
@@ -73,17 +117,20 @@
         .add-tab { font-size: 1.2rem; color: var(--text-dim); cursor: pointer; padding: 0 10px; }
 
         .eye-care-note { font-size: 0.6rem; font-style: italic; color: var(--text-dim); margin-right: 8px; }
-        iframe { width: 100%; height: 100%; border: none; }
+        iframe { width: 100%; height: 100%; border: none; pointer-events: auto; }
+        
+        /* Prevenir que el iframe capture el mouse al arrastrar */
+        .dragging iframe { pointer-events: none; }
 
         @media (max-width: 900px) { 
-            .main-layout { grid-template-columns: 1fr; overflow-y: auto; } 
-            .preview-container { min-height: 400px; }
-            header { justify-content: center; text-align: center; }
-            .brand { width: 100%; align-items: center; }
+            .main-layout { flex-direction: column; overflow-y: auto; } 
+            .resizer { display: none; }
+            .editors-column, .preview-side { width: 100% !important; flex: none; height: auto; }
+            .preview-side { min-height: 400px; margin-top: 15px; }
         }
     </style>
 </head>
-<body>
+<body id="body-main">
 
 <header>
     <div class="brand">
@@ -104,33 +151,28 @@
     </div>
 </header>
 
-<div class="main-layout">
-    <div class="editors-column">
-        <div class="editor-box">
-            <div class="editor-header"><div class="label">HTML</div></div>
-            <textarea id="html-code" oninput="saveAndPreview()"></textarea>
-        </div>
-        <div class="editor-box">
-            <div class="editor-header"><div class="label">CSS</div></div>
-            <textarea id="css-code" oninput="saveAndPreview()"></textarea>
-        </div>
-        <div class="editor-box">
-            <div class="editor-header"><div class="label">JAVASCRIPT</div></div>
-            <textarea id="js-code" oninput="saveAndPreview()"></textarea>
-        </div>
+<div class="main-layout" id="main-container">
+    <div class="editors-column" id="left-side">
+        <div class="editor-box"><div class="editor-header"><div class="label">HTML</div></div><textarea id="html-code" oninput="saveAndPreview()"></textarea></div>
+        <div class="editor-box"><div class="editor-header"><div class="label">CSS</div></div><textarea id="css-code" oninput="saveAndPreview()"></textarea></div>
+        <div class="editor-box"><div class="editor-header"><div class="label">JAVASCRIPT</div></div><textarea id="js-code" oninput="saveAndPreview()"></textarea></div>
     </div>
 
-    <div class="preview-container" id="preview-wrapper">
-        <div class="tabs-bar">
-            <div class="tabs-wrapper" id="tabs-list"></div>
-            <div class="controls-right" style="display:flex; align-items:center;">
-                <span class="eye-care-note" id="eye-note"></span>
-                <div onclick="toggleTheme()" style="cursor:pointer; display:flex;">
-                    <svg id="theme-icon" width="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+    <div class="resizer" id="drag-bar"></div>
+
+    <div class="preview-side">
+        <div class="preview-container" id="preview-wrapper">
+            <div class="tabs-bar">
+                <div class="tabs-wrapper" id="tabs-list"></div>
+                <div class="controls-right" style="display:flex; align-items:center;">
+                    <span class="eye-care-note" id="eye-note"></span>
+                    <div onclick="toggleTheme()" style="cursor:pointer; display:flex;">
+                        <svg id="theme-icon" width="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+                    </div>
                 </div>
             </div>
+            <iframe id="preview-iframe"></iframe>
         </div>
-        <iframe id="preview-iframe"></iframe>
     </div>
 </div>
 
@@ -140,18 +182,16 @@
         warn: "Proyectos ligeros / Light projects",
         clearMsg: "¿Borrar todo el historial?",
         dl: "DESCARGAR", donate: "DONAR", note: "Modo oscuro:", proj: "Proyecto",
-        // EJEMPLOS POR DEFECTO
-        htmlEx: "<h1>Hola mundo</h1>\n<p>Haz clic en el botón de abajo</p>\n<button id='btn'>Haz clic aquí</button>",
-        cssEx: "body {\n  font-family: 'Inter', sans-serif;\n  text-align: center;\n  padding-top: 50px;\n}\n\nbutton {\n  background: #3b82f6;\n  color: white;\n  border: none;\n  padding: 10px 20px;\n  border-radius: 5px;\n  cursor: pointer;\n}",
-        jsEx: "// Ejemplo de JavaScript\ndocument.getElementById('btn').onclick = function() {\n  alert('¡Hola desde el código!');\n  console.log('Botón presionado');\n};"
+        htmlEx: "<h1>Hola mundo</h1>\n<button id='btn'>Haz clic aquí</button>",
+        cssEx: "body {\n  text-align: center;\n  padding-top: 50px;\n}\nbutton {\n  background: #3b82f6;\n  color: white;\n  border: none;\n  padding: 10px 20px;\n  border-radius: 5px;\n  cursor: pointer;\n}",
+        jsEx: "document.getElementById('btn').onclick = () => {\n  alert('¡Hola!');\n};"
     } : {
         warn: "Light projects only",
         clearMsg: "Delete all history?",
         dl: "DOWNLOAD", donate: "DONATE", note: "Dark mode:", proj: "Project",
-        // DEFAULT EXAMPLES
-        htmlEx: "<h1>Hello World</h1>\n<p>Click the button below</p>\n<button id='btn'>Click Me</button>",
-        cssEx: "body {\n  font-family: 'Inter', sans-serif;\n  text-align: center;\n  padding-top: 50px;\n}\n\nbutton {\n  background: #3b82f6;\n  color: white;\n  border: none;\n  padding: 10px 20px;\n  border-radius: 5px;\n  cursor: pointer;\n}",
-        jsEx: "// JavaScript Example\ndocument.getElementById('btn').onclick = function() {\n  alert('Hello from the code!');\n  console.log('Button clicked');\n};"
+        htmlEx: "<h1>Hello World</h1>\n<button id='btn'>Click Me</button>",
+        cssEx: "body {\n  text-align: center;\n  padding-top: 50px;\n}\nbutton {\n  background: #3b82f6;\n  color: white;\n  border: none;\n  padding: 10px 20px;\n  border-radius: 5px;\n  cursor: pointer;\n}",
+        jsEx: "document.getElementById('btn').onclick = () => {\n  alert('Hello!');\n};"
     };
 
     document.getElementById('storage-warning').innerText = lang.warn;
@@ -163,12 +203,53 @@
     let activeTabId = localStorage.getItem('previewer_active_tab') || null;
     let isDarkMode = true;
 
+    const htmlInput = document.getElementById('html-code');
+    const cssInput = document.getElementById('css-code');
+    const jsInput = document.getElementById('js-code');
+
+    // --- NUEVA FUNCIÓN: SOPORTE DE TECLA TAB ---
+    function enableTabSupport(el) {
+        el.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + "  " + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 2;
+                saveAndPreview();
+            }
+        });
+    }
+    [htmlInput, cssInput, jsInput].forEach(enableTabSupport);
+
+    // --- NUEVA FUNCIÓN: RESIZER (ARRASTRAR VENTANAS) ---
+    const resizer = document.getElementById('drag-bar');
+    const leftSide = document.getElementById('left-side');
+    const container = document.getElementById('main-container');
+
+    resizer.addEventListener('mousedown', (e) => {
+        document.body.classList.add('dragging');
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', () => {
+            document.body.classList.remove('dragging');
+            document.removeEventListener('mousemove', onMouseMove);
+        });
+    });
+
+    function onMouseMove(e) {
+        let newWidth = (e.clientX / window.innerWidth) * 100;
+        if (newWidth > 20 && newWidth < 80) {
+            leftSide.style.width = newWidth + '%';
+        }
+    }
+
+    // --- LÓGICA DE PROYECTOS Y PERSISTENCIA ---
     function saveAndPreview() {
         const tab = tabs.find(t => t.id == activeTabId);
         if (tab) {
-            tab.html = document.getElementById('html-code').value;
-            tab.css = document.getElementById('css-code').value;
-            tab.js = document.getElementById('js-code').value;
+            tab.html = htmlInput.value;
+            tab.css = cssInput.value;
+            tab.js = jsInput.value;
             localStorage.setItem('previewer_tabs', JSON.stringify(tabs));
             updateIframe();
         }
@@ -181,7 +262,6 @@
         const doc = preview.contentDocument || preview.contentWindow.document;
         const bg = isDarkMode ? "#1e1f20" : "#f5f5f5";
         const color = isDarkMode ? "#e3e3e3" : "#333";
-        document.getElementById('preview-wrapper').style.background = bg;
         doc.open();
         doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;font-family:'Inter',sans-serif;transition:0.3s;}${tab.css}</style></head><body><div style='text-align:center'>${tab.html}</div><script>${tab.js}<\/script></body></html>`);
         doc.close();
@@ -209,7 +289,6 @@
 
     function createNewTab() {
         const id = Date.now();
-        // AHORA CADA NUEVO PROYECTO TIENE EJEMPLOS EN LAS TRES CAJAS
         tabs.push({ id, name: `${lang.proj} ${tabs.length + 1}`, html: lang.htmlEx, css: lang.cssEx, js: lang.jsEx });
         switchTab(id);
     }
@@ -218,9 +297,9 @@
         activeTabId = id;
         localStorage.setItem('previewer_active_tab', id);
         const tab = tabs.find(t => t.id == id);
-        document.getElementById('html-code').value = tab.html;
-        document.getElementById('css-code').value = tab.css;
-        document.getElementById('js-code').value = tab.js;
+        htmlInput.value = tab.html;
+        cssInput.value = tab.css;
+        jsInput.value = tab.js;
         renderTabs();
         updateIframe();
     }
