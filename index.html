@@ -19,8 +19,6 @@
             --border-radius: 8px;
             --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.6);
             --shadow-strong: 0 15px 45px rgba(0, 0, 0, 0.8);
-            
-            /* Temas del Previewer */
             --preview-light: #f5f5f5;
             --preview-dark: #1e1f20;
         }
@@ -28,59 +26,63 @@
         * { box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Lato', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        header { padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        h1 { font-size: 1.5rem; font-weight: 900; margin: 0; letter-spacing: -0.5px; color: #fff; }
-        .actions-group { display: flex; gap: 12px; align-items: center; }
+        header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        h1 { font-size: 1.3rem; font-weight: 900; margin: 0; letter-spacing: -0.5px; color: #fff; }
+        
+        .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+        .actions-group { display: flex; gap: 12px; }
+        
+        /* Nota de protección visual */
+        .eye-care-note { font-size: 0.65rem; font-style: italic; color: var(--text-dim); opacity: 0.7; font-weight: 300; }
 
-        .btn { padding: 10px 22px; text-decoration: none; border-radius: var(--border-radius); font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; border: none; cursor: pointer; color: white; }
-        .btn-download { background-color: #303136; color: var(--text-main); border: 1px solid var(--border-line); }
+        .btn { padding: 8px 18px; text-decoration: none; border-radius: var(--border-radius); font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; border: none; cursor: pointer; color: white; }
+        .btn-download { background-color: #303136; border: 1px solid var(--border-line); }
         .btn-paypal { background-color: var(--accent-blue); }
-        .btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-strong); filter: brightness(1.1); }
 
-        .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; padding: 0 30px 30px 30px; flex: 1; overflow: hidden; }
+        .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 0 20px 20px 20px; flex: 1; overflow: hidden; }
 
         .editors-column { display: flex; flex-direction: column; gap: 15px; height: 100%; }
-        .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); box-shadow: var(--shadow-soft); transition: all 0.3s ease; }
-        .editor-header { background: var(--header-dark); padding: 12px 15px; border-bottom: 2px solid var(--border-line); }
-        .label { font-size: 0.65rem; color: var(--text-dim); font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; }
-        textarea { background: transparent; border: none; color: var(--code-text); font-family: 'Consolas', monospace; font-size: 14px; flex: 1; padding: 15px; resize: none; outline: none; line-height: 1.6; }
+        .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); box-shadow: var(--shadow-soft); }
+        .editor-header { background: var(--header-dark); padding: 10px 15px; border-bottom: 2px solid var(--border-line); }
+        .label { font-size: 0.6rem; color: var(--text-dim); font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; }
+        textarea { background: transparent; border: none; color: var(--code-text); font-family: 'Consolas', monospace; font-size: 13px; flex: 1; padding: 12px; resize: none; outline: none; line-height: 1.6; }
 
-        /* CONTENEDOR PREVIEW Y PESTAÑAS */
-        .preview-container { display: flex; flex-direction: column; height: 100%; border-radius: var(--border-radius); border: 1px solid var(--border-line); box-shadow: var(--shadow-soft); overflow: hidden; position: relative; transition: background 0.3s ease; }
-        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding: 0 10px; border-bottom: 2px solid var(--border-line); gap: 2px; }
+        /* PESTAÑAS Y PREVIEW */
+        .preview-container { display: flex; flex-direction: column; height: 100%; border-radius: var(--border-radius); border: 1px solid var(--border-line); box-shadow: var(--shadow-soft); overflow: hidden; position: relative; }
+        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 15px; border-bottom: 2px solid var(--border-line); justify-content: space-between; }
         
-        .tab { padding: 12px 15px; color: var(--text-dim); font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; transition: 0.2s; min-width: 130px; justify-content: space-between; }
+        .tabs-wrapper { display: flex; align-items: center; overflow-x: auto; flex: 1; }
+        .tab { padding: 12px 15px; color: var(--text-dim); font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; transition: 0.2s; min-width: 110px; }
         .tab.active { color: white; border-bottom: 2px solid var(--accent-blue); background: rgba(255,255,255,0.05); }
-        .tab span { outline: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 2px 4px; border-radius: 4px; }
+        .tab span { outline: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        .tab-icons { display: flex; align-items: center; gap: 8px; }
-        .close-tab { font-size: 12px; font-weight: 900; opacity: 0.3; transition: 0.2s; padding: 2px 5px; border-radius: 4px; }
+        .close-tab { font-size: 10px; opacity: 0.3; transition: 0.2s; padding: 2px 4px; border-radius: 4px; }
         .close-tab:hover { opacity: 1; background: var(--accent-red); color: white; }
 
-        .add-tab { font-size: 1.5rem; color: var(--text-dim); cursor: pointer; padding: 0 15px; transition: 0.3s; display: flex; align-items: center; }
-        .add-tab:hover { color: white; transform: scale(1.2); }
-        .add-tab.disabled { opacity: 0.2; cursor: not-allowed; pointer-events: none; }
+        .controls-group { display: flex; align-items: center; gap: 15px; }
+        .add-tab { font-size: 1.4rem; color: var(--text-dim); cursor: pointer; transition: 0.3s; }
+        .add-tab:hover { color: white; transform: scale(1.1); }
+        .add-tab.disabled { opacity: 0.1; cursor: not-allowed; }
 
-        /* BOTÓN DE TEMA */
-        .theme-toggle { position: absolute; bottom: 20px; right: 20px; width: 45px; height: 45px; background: var(--header-dark); border: 1px solid var(--border-line); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-soft); transition: 0.3s; z-index: 100; }
-        .theme-toggle:hover { transform: rotate(15deg) scale(1.1); background: #333; }
-        .theme-toggle svg { width: 20px; height: 20px; stroke: var(--text-main); }
+        .theme-btn { cursor: pointer; display: flex; align-items: center; opacity: 0.6; transition: 0.3s; }
+        .theme-btn:hover { opacity: 1; }
+        .theme-btn svg { width: 16px; height: 16px; stroke: white; }
 
-        iframe { width: 100%; height: 100%; border: none; background-color: transparent; }
+        iframe { width: 100%; height: 100%; border: none; }
 
-        @media (max-width: 900px) {
-            .main-layout { grid-template-columns: 1fr; overflow-y: auto; }
-            .preview-container { min-height: 450px; order: -1; }
-        }
+        @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } .preview-container { min-height: 400px; order: -1; } .eye-care-note { text-align: center; } }
     </style>
 </head>
 <body>
 
 <header>
     <h1>Free Online Code Previewer</h1>
-    <div class="actions-group">
-        <button class="btn btn-download" onclick="downloadCurrentTab()">DESCARGAR .HTML</button>
-        <a href="https://paypal.me/abenguche" target="_blank" class="btn btn-paypal">DONAR CON PAYPAL</a>
+    <div class="header-right">
+        <div class="actions-group">
+            <button class="btn btn-download" onclick="downloadCurrentTab()">DESCARGAR .HTML</button>
+            <a href="https://paypal.me/abenguche" target="_blank" class="btn btn-paypal">DONAR CON PAYPAL</a>
+        </div>
+        <span class="eye-care-note">Usamos modo oscuro para cuidar tus ojos. Puedes cambiarlo en la barra de proyectos.</span>
     </div>
 </header>
 
@@ -95,85 +97,71 @@
             <textarea id="css-code"></textarea>
         </div>
         <div class="editor-box">
-            <div class="editor-header"><div class="label">JAVASCRIPT</div></div>
+            <div class="editor-header"><div class="label">JS</div></div>
             <textarea id="js-code"></textarea>
         </div>
     </div>
 
     <div class="preview-container" id="preview-wrapper">
-        <div class="tabs-bar" id="tabs-bar">
-            <div class="add-tab" id="add-btn" onclick="createNewTab()">+</div>
+        <div class="tabs-bar">
+            <div class="tabs-wrapper" id="tabs-list">
+                </div>
+            <div class="controls-group">
+                <div class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Cambiar luz/oscuridad">
+                    <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+                    </svg>
+                </div>
+                <div class="add-tab" id="add-btn" onclick="createNewTab()">+</div>
+            </div>
         </div>
-        
         <iframe id="preview-iframe"></iframe>
-
-        <div class="theme-toggle" onclick="toggleTheme()" title="Cambiar tema del visor">
-            <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-        </div>
     </div>
 </div>
 
 <script>
     let tabs = [];
     let activeTabId = null;
-    let isDarkMode = false; // Inicia en modo claro (Soft White)
+    let isDarkMode = true; // CAMBIADO: Inicia en OSCURO por defecto
     const MAX_TABS = 5;
 
     const htmlInput = document.getElementById('html-code');
     const cssInput = document.getElementById('css-code');
     const jsInput = document.getElementById('js-code');
     const preview = document.getElementById('preview-iframe');
-    const tabsBar = document.getElementById('tabs-bar');
+    const tabsList = document.getElementById('tabs-list');
     const addBtn = document.getElementById('add-btn');
-    const previewWrapper = document.getElementById('preview-wrapper');
     const themeIcon = document.getElementById('theme-icon');
 
-    function toggleTheme() {
-        isDarkMode = !isDarkMode;
-        previewWrapper.style.background = isDarkMode ? "var(--preview-dark)" : "var(--preview-light)";
-        
-        // Cambiar icono
-        if (isDarkMode) {
-            themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
-        } else {
-            themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
-        }
-        updatePreview();
-    }
-
-    function createNewTab(name = "Proyecto Nuevo") {
+    function createNewTab() {
         if (tabs.length >= MAX_TABS) return;
+        let num = 1;
+        while(tabs.some(t => t.name === `Proyecto ${num}`)) { num++; }
         const id = Date.now();
         tabs.push({
             id: id,
-            name: name,
+            name: `Proyecto ${num}`,
             html: "<h1>Hola mundo</h1>",
-            css: "body {\n  font-family: 'Lato', sans-serif;\n  text-align: center;\n  padding-top: 50px;\n}",
+            css: "body { font-family: 'Lato', sans-serif; text-align: center; padding-top: 50px; }",
             js: ""
         });
         renderTabs();
         switchTab(id);
-        checkTabLimit();
-    }
-
-    function checkTabLimit() {
-        tabs.length >= MAX_TABS ? addBtn.classList.add('disabled') : addBtn.classList.remove('disabled');
+        checkLimit();
     }
 
     function renderTabs() {
-        document.querySelectorAll('.tab').forEach(t => t.remove());
+        tabsList.innerHTML = "";
         tabs.forEach(tab => {
             const tabEl = document.createElement('div');
             tabEl.className = `tab ${tab.id === activeTabId ? 'active' : ''}`;
             tabEl.onclick = () => switchTab(tab.id);
             tabEl.ondblclick = () => enableEdit(tab.id, tabEl.querySelector('span'));
             tabEl.innerHTML = `
-                <span>${tab.name}</span>
-                <div class="tab-icons"><div class="close-tab" onclick="closeTab(${tab.id}, event)">✕</div></div>
+                <span onblur="disableEdit(${tab.id}, this)" onkeydown="checkEnter(event, this)">${tab.name}</span>
+                <div class="close-tab" onclick="closeTab(${tab.id}, event)">✕</div>
             `;
-            tabsBar.insertBefore(tabEl, addBtn);
+            tabsList.appendChild(tabEl);
         });
     }
 
@@ -181,25 +169,19 @@
         span.contentEditable = true;
         span.focus();
         document.execCommand('selectAll', false, null);
-        span.onblur = () => {
-            span.contentEditable = false;
-            const tab = tabs.find(t => t.id === id);
-            if (tab) tab.name = span.innerText.trim() || "Proyecto";
-            renderTabs();
-        };
     }
 
-    function closeTab(id, event) {
-        event.stopPropagation();
-        tabs = tabs.filter(t => t.id !== id);
-        if (tabs.length === 0) createNewTab("Proyecto 1");
-        else if (activeTabId === id) switchTab(tabs[0].id);
-        else renderTabs();
-        checkTabLimit();
+    function disableEdit(id, span) {
+        span.contentEditable = false;
+        const tab = tabs.find(t => t.id === id);
+        if (tab) tab.name = span.innerText.trim() || "Proyecto";
+        renderTabs();
     }
+
+    function checkEnter(e, span) { if (e.key === 'Enter') { e.preventDefault(); span.blur(); } }
 
     function switchTab(id) {
-        if (activeTabId) saveCurrentState();
+        if (activeTabId) saveState();
         activeTabId = id;
         const tab = tabs.find(t => t.id === id);
         if (tab) {
@@ -211,7 +193,7 @@
         }
     }
 
-    function saveCurrentState() {
+    function saveState() {
         const tab = tabs.find(t => t.id === activeTabId);
         if (tab) {
             tab.html = htmlInput.value;
@@ -220,51 +202,53 @@
         }
     }
 
+    function closeTab(id, e) {
+        e.stopPropagation();
+        tabs = tabs.filter(t => t.id !== id);
+        if (tabs.length === 0) createNewTab();
+        else if (activeTabId === id) switchTab(tabs[0].id);
+        else renderTabs();
+        checkLimit();
+    }
+
+    function checkLimit() {
+        tabs.length >= MAX_TABS ? addBtn.classList.add('disabled') : addBtn.classList.remove('disabled');
+    }
+
+    function toggleTheme() {
+        isDarkMode = !isDarkMode;
+        // Cambiar icono según el estado
+        themeIcon.innerHTML = isDarkMode ? 
+            '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>' : 
+            '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+        updatePreview();
+    }
+
     function updatePreview() {
         const doc = preview.contentDocument || preview.contentWindow.document;
-        const currentBg = isDarkMode ? "var(--preview-dark)" : "var(--preview-light)";
-        const currentText = isDarkMode ? "#e3e3e3" : "#333";
+        const bg = isDarkMode ? "#1e1f20" : "#f5f5f5";
+        const color = isDarkMode ? "#e3e3e3" : "#333";
         
-        previewWrapper.style.background = currentBg;
+        document.getElementById('preview-wrapper').style.background = bg;
 
         doc.open();
-        doc.write(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <style>
-                    body { background-color: ${isDarkMode ? '#1e1f20' : '#f5f5f5'}; color: ${currentText}; margin: 0; min-height: 100vh; transition: 0.3s; }
-                    ${cssInput.value}
-                </style>
-            </head>
-            <body>
-                ${htmlInput.value}
-                <script>${jsInput.value}<\/script>
-            </body>
-            </html>
-        `);
+        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;transition:0.3s;}${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`);
         doc.close();
     }
 
+    [htmlInput, cssInput, jsInput].forEach(el => el.addEventListener('input', () => { saveState(); updatePreview(); }));
+
     function downloadCurrentTab() {
         const tab = tabs.find(t => t.id === activeTabId);
-        if (!tab) return;
-        const fullCode = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{background-color:${isDarkMode?'#1e1f20':'#f5f5f5'};color:${isDarkMode?'#eee':'#333'};}${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`;
-        const blob = new Blob([fullCode], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
+        const code = `<!DOCTYPE html><html><head><style>body{background:${isDarkMode?'#1e1f20':'#f5f5f5'};color:${isDarkMode?'#eee':'#333'};}${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`;
+        const blob = new Blob([code], {type: 'text/html'});
         const a = document.createElement('a');
-        a.href = url;
+        a.href = URL.createObjectURL(blob);
         a.download = `${tab.name}.html`;
         a.click();
     }
 
-    [htmlInput, cssInput, jsInput].forEach(el => el.addEventListener('input', () => {
-        saveCurrentState();
-        updatePreview();
-    }));
-
-    createNewTab("Proyecto 1");
+    createNewTab(); 
 </script>
-
 </body>
 </html>
