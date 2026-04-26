@@ -3,65 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Online Code Previewer Ultra</title>
-    
+    <title>Free Online Code Previewer Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-
     <style>
         :root {
-            --bg-color: #0f1014; --card-bg: #16181d; --header-dark: #090a0d;
-            --text-main: #f0f1f5; --text-dim: #9ca3af; --accent-blue: #0070ba; 
-            --accent-red: #ef4444; --border-line: #22252e; --border-radius: 6px;
+            --bg-color: #0f1014;
+            --card-bg: #16181d;
+            --header-dark: #090a0d;
+            --text-main: #f0f1f5;
+            --text-dim: #9ca3af;
+            --code-text: #a1a1aa;
+            --accent-blue: #0070ba; 
+            --accent-red: #ef4444;
+            --border-line: #22252e;
+            --border-radius: 6px;
         }
 
         * { box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        header { padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-line); z-index: 10; }
-        .storage-warning { font-size: 0.65rem; color: var(--text-dim); font-style: italic; font-weight: 500; opacity: 0.9; }
+        header { 
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--border-line);
+            gap: 10px;
+        }
+        .brand { display: flex; flex-direction: column; }
+        h1 { font-size: 1rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
+        .storage-warning { font-size: 0.65rem; color: var(--text-dim); font-style: italic; font-weight: 500; opacity: 0.9; margin-top: 1px; }
+        
         .actions-group { display: flex; gap: 8px; align-items: center; }
 
-        .btn { padding: 6px 12px; border-radius: var(--border-radius); font-weight: 600; font-size: 0.65rem; border: none; cursor: pointer; color: white; transition: 0.2s; display: flex; align-items: center; gap: 6px; height: 30px; }
-        .btn-download { background-color: #272a34; color: var(--text-dim); border: 1px solid var(--border-line); }
+        .btn { 
+            padding: 6px 12px; 
+            border-radius: var(--border-radius); 
+            font-weight: 600; 
+            font-size: 0.65rem; 
+            border: none; 
+            cursor: pointer; 
+            color: white; 
+            transition: 0.2s; 
+            display: flex; 
+            align-items: center; 
+            gap: 6px;
+            height: 30px;
+        }
+        .btn-download { background-color: #272a34; border: 1px solid var(--border-line); color: var(--text-dim); }
         .btn-paypal { background-color: var(--accent-blue); }
-        .btn-clear { background: transparent; color: var(--accent-red); border: 1px solid rgba(239,68,68,0.2); }
+        .btn-clear { background: transparent; color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.2); padding: 6px 8px; }
+        .btn-clear:hover { background-color: var(--accent-red); color: white; }
 
-        .main-layout { display: flex; flex: 1; overflow: hidden; padding: 12px; gap: 0; }
+        .main-layout { display: flex; flex: 1; padding: 12px; gap: 0; overflow: hidden; }
         .editors-column { display: flex; flex-direction: column; gap: 10px; height: 100%; width: 50%; min-width: 300px; }
         
         .resizer { width: 12px; cursor: col-resize; display: flex; justify-content: center; align-items: center; }
         .resizer::after { content: ""; width: 2px; height: 40px; background: var(--border-line); border-radius: 2px; }
 
         .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); }
-        .editor-header { background: var(--header-dark); padding: 6px 12px; border-bottom: 1px solid var(--border-line); font-size: 0.55rem; font-weight: 800; color: var(--text-dim); letter-spacing: 1px; }
+        .editor-header { background: var(--header-dark); padding: 6px 12px; border-bottom: 1px solid var(--border-line); font-size: 0.5rem; font-weight: 800; color: var(--text-dim); letter-spacing: 1.5px; }
 
-        /* [CONTENEDOR DEL EDITOR] */
-        .editor-container { position: relative; flex: 1; display: flex; overflow: hidden; background: #111; }
-        
-        .line-numbers { width: 35px; padding: 15px 5px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4b5563; background: #0c0d11; border-right: 1px solid var(--border-line); user-select: none; line-height: 1.5; overflow: hidden; }
+        .editor-container { position: relative; flex: 1; display: flex; overflow: hidden; }
+        .line-numbers { width: 35px; padding: 12px 5px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4b5563; background: #0c0d11; border-right: 1px solid var(--border-line); user-select: none; line-height: 1.6; }
 
-        .code-area { position: relative; flex: 1; height: 100%; }
-        
-        /* textarea y pre deben ser idénticos para que coincidan los colores */
-        textarea, pre { 
-            margin: 0; padding: 15px; width: 100%; height: 100%; 
+        textarea { 
+            background: transparent; border: none; color: var(--code-text); 
             font-family: 'JetBrains Mono', monospace; font-size: 12px; 
-            line-height: 1.5; tab-size: 2; position: absolute; top: 0; left: 0; 
-            white-space: pre; word-wrap: normal; overflow: auto;
+            flex: 1; padding: 12px; resize: none; outline: none; 
+            line-height: 1.6; tab-size: 2; white-space: pre; overflow: auto;
         }
-        
-        textarea { z-index: 2; background: transparent; color: transparent; caret-color: white; resize: none; border: none; outline: none; }
-        pre { z-index: 1; pointer-events: none; background: transparent !important; border: none; }
-        code { font-family: inherit !important; }
 
-        .preview-side { flex: 1; height: 100%; display: flex; flex-direction: column; border-radius: var(--border-radius); border: 1px solid var(--border-line); overflow: hidden; background: #1e1f20; }
-        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; height: 35px; border-bottom: 1px solid var(--border-line); padding-right: 10px; }
-        .tabs-wrapper { display: flex; overflow-x: auto; flex: 1; }
-        .tab { padding: 0 15px; font-size: 0.65rem; color: var(--text-dim); cursor: pointer; display: flex; align-items: center; gap: 8px; height: 35px; white-space: nowrap; }
+        .preview-side { flex: 1; height: 100%; display: flex; flex-direction: column; border-radius: var(--border-radius); border: 1px solid var(--border-line); overflow: hidden; }
+        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 12px; border-bottom: 1px solid var(--border-line); justify-content: space-between; height: 35px; }
+        .tabs-wrapper { display: flex; align-items: center; overflow-x: auto; flex: 1; }
+        .tab { padding: 0 12px; color: var(--text-dim); font-size: 0.65rem; cursor: pointer; display: flex; align-items: center; gap: 6px; border-bottom: 2px solid transparent; height: 35px; }
         .tab.active { color: white; border-bottom: 2px solid var(--accent-blue); background: rgba(255,255,255,0.03); }
-        .add-tab { padding: 0 10px; cursor: pointer; color: var(--text-dim); font-size: 1.2rem; }
+        .close-tab { font-size: 9px; opacity: 0.3; padding: 2px; }
+        .add-tab { font-size: 1.2rem; color: var(--text-dim); cursor: pointer; padding: 0 10px; }
 
+        .eye-care-note { font-size: 0.6rem; font-style: italic; color: var(--text-dim); margin-right: 8px; }
         iframe { width: 100%; height: 100%; border: none; background: white; }
 
         @media (max-width: 900px) { .main-layout { flex-direction: column; } .editors-column, .preview-side { width: 100%; min-height: 400px; } .resizer { display: none; } }
@@ -75,7 +96,7 @@
         <span class="storage-warning" id="storage-warning"></span>
     </div>
     <div class="actions-group">
-        <button class="btn btn-clear" onclick="clearAllHistory()">
+        <button class="btn btn-clear" onclick="clearAllHistory()" title="Clear">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
         </button>
         <button class="btn btn-download" id="btn-download" onclick="downloadCurrentTab()"></button>
@@ -92,30 +113,21 @@
             <div class="editor-header">HTML</div>
             <div class="editor-container">
                 <div class="line-numbers" id="html-lines">1</div>
-                <div class="code-area">
-                    <textarea id="html-code" spellcheck="false" oninput="updateEditor('html')" onscroll="syncScroll('html')"></textarea>
-                    <pre aria-hidden="true"><code id="html-highlight" class="language-html"></code></pre>
-                </div>
+                <textarea id="html-code" spellcheck="false" oninput="updateLines('html')" onscroll="syncLines('html')"></textarea>
             </div>
         </div>
         <div class="editor-box">
             <div class="editor-header">CSS</div>
             <div class="editor-container">
                 <div class="line-numbers" id="css-lines">1</div>
-                <div class="code-area">
-                    <textarea id="css-code" spellcheck="false" oninput="updateEditor('css')" onscroll="syncScroll('css')"></textarea>
-                    <pre aria-hidden="true"><code id="css-highlight" class="language-css"></code></pre>
-                </div>
+                <textarea id="css-code" spellcheck="false" oninput="updateLines('css')" onscroll="syncLines('css')"></textarea>
             </div>
         </div>
         <div class="editor-box">
             <div class="editor-header">JAVASCRIPT</div>
             <div class="editor-container">
                 <div class="line-numbers" id="js-lines">1</div>
-                <div class="code-area">
-                    <textarea id="js-code" spellcheck="false" oninput="updateEditor('js')" onscroll="syncScroll('js')"></textarea>
-                    <pre aria-hidden="true"><code id="js-highlight" class="language-javascript"></code></pre>
-                </div>
+                <textarea id="js-code" spellcheck="false" oninput="updateLines('js')" onscroll="syncLines('js')"></textarea>
             </div>
         </div>
     </div>
@@ -125,33 +137,29 @@
     <div class="preview-side">
         <div class="tabs-bar">
             <div class="tabs-wrapper" id="tabs-list"></div>
-            <span class="eye-care-note" id="eye-note"></span>
-            <div onclick="toggleTheme()" style="cursor:pointer; display:flex;">
-                <svg id="theme-icon" width="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+            <div class="controls-right" style="display:flex; align-items:center;">
+                <span class="eye-care-note" id="eye-note"></span>
+                <div onclick="toggleTheme()" style="cursor:pointer; display:flex;">
+                    <svg id="theme-icon" width="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
+                </div>
             </div>
         </div>
         <iframe id="preview-iframe"></iframe>
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-
 <script>
     const isSpanish = (navigator.language || navigator.userLanguage).startsWith('es');
     const lang = isSpanish ? {
         warn: "Proyectos ligeros / Light projects",
+        clearMsg: "¿Borrar todo?",
         dl: "DESCARGAR", donate: "DONAR", note: "Modo oscuro:", proj: "Proyecto",
-        htmlEx: "<h1>¡Hola Mundo!</h1>\n<p>Contenido centrado automáticamente.</p>",
-        cssEx: "/* Estilos automáticos */\nh1 {\n  color: #3b82f6;\n}",
-        jsEx: "console.log('¡Listo para programar!');"
+        html: "<h1>Hola Mundo</h1>", css: "body { text-align: center; padding-top: 50px; }", js: "console.log('Listo');"
     } : {
         warn: "Light projects only",
+        clearMsg: "Clear all?",
         dl: "DOWNLOAD", donate: "DONATE", note: "Dark mode:", proj: "Project",
-        htmlEx: "<h1>Hello World!</h1>\n<p>Content is auto-centered.</p>",
-        cssEx: "/* Auto styles */\nh1 {\n  color: #3b82f6;\n}",
-        jsEx: "console.log('Ready to code!');"
+        html: "<h1>Hello World</h1>", css: "body { text-align: center; padding-top: 50px; }", js: "console.log('Ready');"
     };
 
     document.getElementById('storage-warning').innerText = lang.warn;
@@ -159,33 +167,20 @@
     document.getElementById('txt-donate').innerText = lang.donate;
     document.getElementById('eye-note').innerText = lang.note;
 
-    let tabs = JSON.parse(localStorage.getItem('previewer_v5')) || [];
-    let activeTabId = localStorage.getItem('active_v5') || null;
+    let tabs = JSON.parse(localStorage.getItem('tabs_final')) || [];
+    let activeTabId = localStorage.getItem('active_final') || null;
     let isDarkMode = true;
 
-    function updateEditor(type) {
-        const area = document.getElementById(`${type}-code`);
-        const highlight = document.getElementById(`${type}-highlight`);
+    function updateLines(type) {
+        const txt = document.getElementById(`${type}-code`);
         const lines = document.getElementById(`${type}-lines`);
-        
-        let code = area.value;
-        // Evitar que el código "baile" al final de la línea
-        highlight.textContent = code + (code.endsWith('\n') ? ' ' : '');
-        Prism.highlightElement(highlight);
-
-        const lineCount = code.split('\n').length;
-        lines.innerHTML = Array.from({length: lineCount}, (_, i) => i + 1).join('<br>');
-        
+        const count = txt.value.split('\n').length;
+        lines.innerHTML = Array.from({length: count}, (_, i) => i + 1).join('<br>');
         saveAndPreview();
     }
 
-    function syncScroll(type) {
-        const area = document.getElementById(`${type}-code`);
-        const pre = area.nextElementSibling;
-        const lines = document.getElementById(`${type}-lines`);
-        pre.scrollTop = area.scrollTop;
-        pre.scrollLeft = area.scrollLeft;
-        lines.scrollTop = area.scrollTop;
+    function syncLines(type) {
+        document.getElementById(`${type}-lines`).scrollTop = document.getElementById(`${type}-code`).scrollTop;
     }
 
     function saveAndPreview() {
@@ -194,7 +189,7 @@
             tab.html = document.getElementById('html-code').value;
             tab.css = document.getElementById('css-code').value;
             tab.js = document.getElementById('js-code').value;
-            localStorage.setItem('previewer_v5', JSON.stringify(tabs));
+            localStorage.setItem('tabs_final', JSON.stringify(tabs));
             updateIframe();
         }
     }
@@ -202,11 +197,11 @@
     function updateIframe() {
         const tab = tabs.find(t => t.id == activeTabId);
         if (!tab) return;
-        const doc = document.getElementById('preview-iframe').contentDocument;
         const bg = isDarkMode ? "#1e1f20" : "#f5f5f5";
         const color = isDarkMode ? "#e3e3e3" : "#333";
+        const doc = document.getElementById('preview-iframe').contentDocument;
         doc.open();
-        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;font-family:sans-serif;}${tab.css}</style></head><body>${tab.html}<script>${tab.js}<\/script></body></html>`);
+        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;font-family:sans-serif;}${tab.css}</style></head><body><div>${tab.html}</div><script>${tab.js}<\/script></body></html>`);
         doc.close();
     }
 
@@ -216,7 +211,7 @@
         tabs.forEach(tab => {
             const el = document.createElement('div');
             el.className = `tab ${tab.id == activeTabId ? 'active' : ''}`;
-            el.innerHTML = `<span>${tab.name}</span><div style='margin-left:8px;opacity:0.3' onclick='closeTab(${tab.id}, event)'>✕</div>`;
+            el.innerHTML = `<span>${tab.name}</span><div class='close-tab' onclick='closeTab(${tab.id}, event)'>✕</div>`;
             el.onclick = () => switchTab(tab.id);
             list.appendChild(el);
         });
@@ -227,20 +222,20 @@
 
     function createNewTab() {
         const id = Date.now();
-        tabs.push({ id, name: `${lang.proj} ${tabs.length + 1}`, html: lang.htmlEx, css: lang.cssEx, js: lang.jsEx });
+        tabs.push({ id, name: `${lang.proj} ${tabs.length + 1}`, html: lang.html, css: lang.css, js: lang.js });
         switchTab(id);
     }
 
     function switchTab(id) {
         activeTabId = id;
-        localStorage.setItem('active_v5', id);
+        localStorage.setItem('active_final', id);
         const tab = tabs.find(t => t.id == id);
         ['html', 'css', 'js'].forEach(type => {
-            const area = document.getElementById(`${type}-code`);
-            area.value = tab[type];
-            updateEditor(type);
+            document.getElementById(`${type}-code`).value = tab[type];
+            updateLines(type);
         });
         renderTabs();
+        updateIframe();
     }
 
     function closeTab(id, e) {
@@ -249,7 +244,7 @@
         if (tabs.length === 0) createNewTab(); else switchTab(tabs[0].id);
     }
 
-    function clearAllHistory() { if(confirm(isSpanish ? '¿Borrar todo?' : 'Clear all?')) { localStorage.clear(); location.reload(); } }
+    function clearAllHistory() { if(confirm(lang.clearMsg)) { localStorage.clear(); location.reload(); } }
     function toggleTheme() { isDarkMode = !isDarkMode; updateIframe(); }
     
     // Resizer
@@ -273,7 +268,7 @@
                 const s = this.selectionStart;
                 this.value = this.value.substring(0,s) + "  " + this.value.substring(this.selectionEnd);
                 this.selectionEnd = s + 2;
-                updateEditor(this.id.split('-')[0]);
+                updateLines(this.id.split('-')[0]);
             }
         });
     });
