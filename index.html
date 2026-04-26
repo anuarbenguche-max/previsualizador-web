@@ -7,56 +7,70 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f0f0f;
+            --bg-color: #131314;
             --card-bg: #1e1f20;
-            --header-dark: #000000;
+            --header-dark: #0f0f0f;
             --text-main: #e3e3e3;
             --text-dim: #b4b4b4;
             --code-text: #a0a0a0;
             --accent-blue: #0070ba; 
+            --accent-red: #cc2929;
             --border-line: #2a2a2a;
             --border-radius: 8px;
-            --shadow-strong: 0 15px 45px rgba(0, 0, 0, 0.9);
+            --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.6);
+            --shadow-strong: 0 15px 45px rgba(0, 0, 0, 0.8);
         }
 
         * { box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Lato', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: var(--bg-color); z-index: 10; }
-        h1 { font-size: 1.3rem; font-weight: 900; margin: 0; }
+        /* [CABECERA] */
+        header { padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        h1 { font-size: 1.5rem; font-weight: 900; margin: 0; letter-spacing: -0.5px; color: #fff; }
+        .actions-group { display: flex; gap: 12px; align-items: center; }
 
-        .actions-group { display: flex; gap: 12px; }
-        .btn { padding: 8px 18px; text-decoration: none; border-radius: var(--border-radius); font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; transition: 0.3s; border: none; cursor: pointer; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .btn-download { background-color: #333; border: 1px solid var(--border-line); }
+        /* [BOTONES] */
+        .btn { padding: 10px 22px; text-decoration: none; border-radius: var(--border-radius); font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; border: none; cursor: pointer; box-shadow: var(--shadow-soft); color: white; }
+        .btn-download { background-color: #303136; color: var(--text-main); border: 1px solid var(--border-line); }
         .btn-paypal { background-color: var(--accent-blue); }
-        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-strong); }
+        .btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-strong); filter: brightness(1.1); }
 
-        .main-layout { display: grid; grid-template-columns: 400px 1fr; gap: 20px; padding: 0 20px 20px 20px; flex: 1; overflow: hidden; }
+        /* [LAYOUT] */
+        .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; padding: 0 30px 30px 30px; flex: 1; overflow: hidden; }
 
-        /* Editores */
+        /* [EDITORES] */
         .editors-column { display: flex; flex-direction: column; gap: 15px; height: 100%; }
-        .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); box-shadow: var(--shadow-strong); }
-        .editor-header { background: var(--header-dark); padding: 8px 15px; border-bottom: 1px solid var(--border-line); }
-        .label { font-size: 0.6rem; color: var(--text-dim); font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; }
-        textarea { background: transparent; border: none; color: var(--code-text); font-family: 'Consolas', monospace; font-size: 13px; flex: 1; padding: 12px; resize: none; outline: none; line-height: 1.5; }
+        .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); box-shadow: var(--shadow-soft); transition: all 0.3s ease; }
+        .editor-header { background: var(--header-dark); padding: 12px 15px; border-bottom: 2px solid var(--border-line); }
+        .label { font-size: 0.65rem; color: var(--text-dim); font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; }
+        textarea { background: transparent; border: none; color: var(--code-text); font-family: 'Consolas', monospace; font-size: 14px; flex: 1; padding: 15px; resize: none; outline: none; line-height: 1.6; }
 
-        /* Sistema de Pestañas y Preview */
-        .preview-container { display: flex; flex-direction: column; height: 100%; background: var(--card-bg); border-radius: var(--border-radius); border: 1px solid var(--border-line); box-shadow: var(--shadow-strong); overflow: hidden; }
+        /* [PESTAÑAS] */
+        .preview-container { display: flex; flex-direction: column; height: 100%; background: var(--card-bg); border-radius: var(--border-radius); border: 1px solid var(--border-line); box-shadow: var(--shadow-soft); overflow: hidden; }
+        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding: 0 10px; border-bottom: 2px solid var(--border-line); gap: 2px; overflow-x: auto; }
         
-        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding: 0 10px; border-bottom: 1px solid var(--border-line); gap: 5px; overflow-x: auto; }
-        .tab { padding: 10px 15px; color: var(--text-dim); font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; white-space: nowrap; }
+        .tab { padding: 12px 15px; color: var(--text-dim); font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; transition: 0.2s; position: relative; min-width: 120px; justify-content: space-between; }
         .tab.active { color: white; border-bottom: 2px solid var(--accent-blue); background: rgba(255,255,255,0.05); }
-        .tab span { outline: none; padding: 2px 5px; border-radius: 4px; }
-        .tab span:focus { background: #333; }
         
-        .add-tab { font-size: 1.5rem; color: var(--text-dim); cursor: pointer; padding: 0 15px; transition: 0.3s; }
+        .tab span { outline: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 2px 4px; border-radius: 4px; transition: background 0.2s; }
+        .tab span[contenteditable="true"] { background: #333; cursor: text; }
+        
+        .tab-icons { display: flex; align-items: center; gap: 8px; }
+        .edit-icon { opacity: 0; font-size: 10px; transition: 0.2s; }
+        .tab:hover .edit-icon { opacity: 0.5; }
+        
+        .close-tab { font-size: 12px; font-weight: 900; opacity: 0.3; transition: 0.2s; padding: 2px 5px; border-radius: 4px; }
+        .close-tab:hover { opacity: 1; background: var(--accent-red); color: white; }
+
+        .add-tab { font-size: 1.5rem; color: var(--text-dim); cursor: pointer; padding: 0 15px; transition: 0.3s; display: flex; align-items: center; }
         .add-tab:hover { color: white; transform: scale(1.2); }
+        .add-tab.disabled { opacity: 0.2; cursor: not-allowed; pointer-events: none; }
 
         iframe { width: 100%; height: 100%; border: none; background: transparent; }
 
         @media (max-width: 900px) {
             .main-layout { grid-template-columns: 1fr; overflow-y: auto; }
-            .preview-container { min-height: 400px; }
+            .preview-container { min-height: 450px; order: -1; }
         }
     </style>
 </head>
@@ -81,14 +95,14 @@
             <textarea id="css-code" placeholder="Escribe CSS..."></textarea>
         </div>
         <div class="editor-box">
-            <div class="editor-header"><div class="label">JS</div></div>
+            <div class="editor-header"><div class="label">JAVASCRIPT</div></div>
             <textarea id="js-code" placeholder="Escribe JS..."></textarea>
         </div>
     </div>
 
     <div class="preview-container">
         <div class="tabs-bar" id="tabs-bar">
-            <div class="add-tab" onclick="createNewTab()">+</div>
+            <div class="add-tab" id="add-btn" onclick="createNewTab()">+</div>
         </div>
         <iframe id="preview-iframe"></iframe>
     </div>
@@ -97,49 +111,94 @@
 <script>
     let tabs = [];
     let activeTabId = null;
+    const MAX_TABS = 5;
 
     const htmlInput = document.getElementById('html-code');
     const cssInput = document.getElementById('css-code');
     const jsInput = document.getElementById('js-code');
     const preview = document.getElementById('preview-iframe');
     const tabsBar = document.getElementById('tabs-bar');
+    const addBtn = document.getElementById('add-btn');
 
-    function createNewTab(name = "Nuevo Proyecto") {
+    function createNewTab(name = "Proyecto Nuevo") {
+        if (tabs.length >= MAX_TABS) return;
         const id = Date.now();
-        const newTab = {
+        tabs.push({
             id: id,
             name: name,
             html: "<h1>Hola mundo</h1>",
-            css: "body { font-family: 'Lato'; color: white; display: flex; justify-content: center; align-items: center; height: 80vh; }",
+            css: "body { font-family: 'Lato', sans-serif; display: flex; justify-content: center; align-items: center; height: 80vh; color: white; }",
             js: ""
-        };
-        tabs.push(newTab);
+        });
         renderTabs();
         switchTab(id);
+        checkTabLimit();
+    }
+
+    function checkTabLimit() {
+        tabs.length >= MAX_TABS ? addBtn.classList.add('disabled') : addBtn.classList.remove('disabled');
     }
 
     function renderTabs() {
-        const addBtn = document.querySelector('.add-tab');
         document.querySelectorAll('.tab').forEach(t => t.remove());
-        
         tabs.forEach(tab => {
             const tabEl = document.createElement('div');
             tabEl.className = `tab ${tab.id === activeTabId ? 'active' : ''}`;
-            tabEl.innerHTML = `<span contenteditable="true" onblur="updateTabName(${tab.id}, this)">${tab.name}</span>`;
-            tabEl.onclick = (e) => { if(e.target.tagName !== 'SPAN') switchTab(tab.id); };
+            tabEl.onclick = () => switchTab(tab.id);
+            tabEl.ondblclick = (e) => enableEdit(tab.id, tabEl.querySelector('span'));
+            
+            tabEl.innerHTML = `
+                <span onblur="disableEdit(${tab.id}, this)" onkeydown="checkEnter(event, this)">${tab.name}</span>
+                <div class="tab-icons">
+                    <div class="edit-icon">✎</div>
+                    <div class="close-tab" onclick="closeTab(${tab.id}, event)">✕</div>
+                </div>
+            `;
             tabsBar.insertBefore(tabEl, addBtn);
         });
+    }
+
+    function enableEdit(id, span) {
+        span.contentEditable = true;
+        span.focus();
+        // Seleccionar todo el texto al editar
+        document.execCommand('selectAll', false, null);
+    }
+
+    function disableEdit(id, span) {
+        span.contentEditable = false;
+        const tab = tabs.find(t => t.id === id);
+        if (tab) tab.name = span.innerText.trim() || "Proyecto";
+        renderTabs();
+    }
+
+    function checkEnter(e, span) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            span.blur();
+        }
+    }
+
+    function closeTab(id, event) {
+        event.stopPropagation();
+        tabs = tabs.filter(t => t.id !== id);
+        if (tabs.length === 0) createNewTab("Proyecto 1");
+        else if (activeTabId === id) switchTab(tabs[0].id);
+        else renderTabs();
+        checkTabLimit();
     }
 
     function switchTab(id) {
         if (activeTabId) saveCurrentState();
         activeTabId = id;
         const tab = tabs.find(t => t.id === id);
-        htmlInput.value = tab.html;
-        cssInput.value = tab.css;
-        jsInput.value = tab.js;
-        renderTabs();
-        updatePreview();
+        if (tab) {
+            htmlInput.value = tab.html;
+            cssInput.value = tab.css;
+            jsInput.value = tab.js;
+            renderTabs();
+            updatePreview();
+        }
     }
 
     function saveCurrentState() {
@@ -151,11 +210,6 @@
         }
     }
 
-    function updateTabName(id, el) {
-        const tab = tabs.find(t => t.id === id);
-        if (tab) tab.name = el.innerText;
-    }
-
     function updatePreview() {
         const doc = preview.contentDocument || preview.contentWindow.document;
         doc.open();
@@ -165,7 +219,8 @@
 
     function downloadCurrentTab() {
         const tab = tabs.find(t => t.id === activeTabId);
-        const fullCode = `<!DOCTYPE html><html><head><style>${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`;
+        if (!tab) return;
+        const fullCode = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`;
         const blob = new Blob([fullCode], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -179,7 +234,6 @@
         updatePreview();
     }));
 
-    // Iniciar con una pestaña
     createNewTab("Proyecto 1");
 </script>
 
