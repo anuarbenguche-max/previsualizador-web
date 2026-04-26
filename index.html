@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Online Code Previewer Ultra</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 
     <style>
@@ -27,30 +27,35 @@
         .btn-paypal { background-color: var(--accent-blue); }
         .btn-clear { background: transparent; color: var(--accent-red); border: 1px solid rgba(239,68,68,0.2); }
 
-        .main-layout { display: flex; flex: 1; overflow: hidden; padding: 10px; gap: 0; }
+        .main-layout { display: flex; flex: 1; overflow: hidden; padding: 12px; gap: 0; }
         .editors-column { display: flex; flex-direction: column; gap: 10px; height: 100%; width: 50%; min-width: 300px; }
         
-        .resizer { width: 10px; cursor: col-resize; display: flex; justify-content: center; align-items: center; }
+        .resizer { width: 12px; cursor: col-resize; display: flex; justify-content: center; align-items: center; }
         .resizer::after { content: ""; width: 2px; height: 40px; background: var(--border-line); border-radius: 2px; }
 
-        .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); position: relative; }
-        .editor-header { background: var(--header-dark); padding: 5px 12px; border-bottom: 1px solid var(--border-line); font-size: 0.55rem; font-weight: 800; color: var(--text-dim); letter-spacing: 1px; }
+        .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); }
+        .editor-header { background: var(--header-dark); padding: 6px 12px; border-bottom: 1px solid var(--border-line); font-size: 0.55rem; font-weight: 800; color: var(--text-dim); letter-spacing: 1px; }
 
-        /* [CONTENEDOR DEL EDITOR PRO] */
-        .editor-container { position: relative; flex: 1; overflow: hidden; display: flex; }
+        /* [CONTENEDOR DEL EDITOR] */
+        .editor-container { position: relative; flex: 1; display: flex; overflow: hidden; background: #111; }
         
-        /* Números de línea */
-        .line-numbers { width: 35px; padding: 15px 5px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4b5563; background: #0c0d11; border-right: 1px solid var(--border-line); user-select: none; line-height: 1.7; }
+        .line-numbers { width: 35px; padding: 15px 5px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4b5563; background: #0c0d11; border-right: 1px solid var(--border-line); user-select: none; line-height: 1.5; overflow: hidden; }
 
-        .code-area { position: relative; flex: 1; }
+        .code-area { position: relative; flex: 1; height: 100%; }
         
-        /* El textarea es el que recibe el texto pero es invisible */
-        textarea, pre { margin: 0; padding: 15px; width: 100%; height: 100%; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; tab-size: 2; position: absolute; top: 0; left: 0; overflow: auto; white-space: pre; border: none; outline: none; }
+        /* textarea y pre deben ser idénticos para que coincidan los colores */
+        textarea, pre { 
+            margin: 0; padding: 15px; width: 100%; height: 100%; 
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; 
+            line-height: 1.5; tab-size: 2; position: absolute; top: 0; left: 0; 
+            white-space: pre; word-wrap: normal; overflow: auto;
+        }
         
-        textarea { z-index: 2; background: transparent; color: transparent; caret-color: white; resize: none; }
-        pre { z-index: 1; pointer-events: none; background: transparent !important; }
+        textarea { z-index: 2; background: transparent; color: transparent; caret-color: white; resize: none; border: none; outline: none; }
+        pre { z-index: 1; pointer-events: none; background: transparent !important; border: none; }
+        code { font-family: inherit !important; }
 
-        .preview-side { flex: 1; height: 100%; display: flex; flex-direction: column; border-radius: var(--border-radius); border: 1px solid var(--border-line); overflow: hidden; }
+        .preview-side { flex: 1; height: 100%; display: flex; flex-direction: column; border-radius: var(--border-radius); border: 1px solid var(--border-line); overflow: hidden; background: #1e1f20; }
         .tabs-bar { background: var(--header-dark); display: flex; align-items: center; height: 35px; border-bottom: 1px solid var(--border-line); padding-right: 10px; }
         .tabs-wrapper { display: flex; overflow-x: auto; flex: 1; }
         .tab { padding: 0 15px; font-size: 0.65rem; color: var(--text-dim); cursor: pointer; display: flex; align-items: center; gap: 8px; height: 35px; white-space: nowrap; }
@@ -59,7 +64,7 @@
 
         iframe { width: 100%; height: 100%; border: none; background: white; }
 
-        @media (max-width: 900px) { .main-layout { flex-direction: column; overflow-y: auto; } .editors-column, .preview-side { width: 100%; min-height: 400px; } .resizer { display: none; } }
+        @media (max-width: 900px) { .main-layout { flex-direction: column; } .editors-column, .preview-side { width: 100%; min-height: 400px; } .resizer { display: none; } }
     </style>
 </head>
 <body>
@@ -70,7 +75,7 @@
         <span class="storage-warning" id="storage-warning"></span>
     </div>
     <div class="actions-group">
-        <button class="btn btn-clear" onclick="clearAllHistory()" title="Clear">
+        <button class="btn btn-clear" onclick="clearAllHistory()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
         </button>
         <button class="btn btn-download" id="btn-download" onclick="downloadCurrentTab()"></button>
@@ -86,30 +91,30 @@
         <div class="editor-box">
             <div class="editor-header">HTML</div>
             <div class="editor-container">
-                <div class="line-numbers" id="html-lines"></div>
+                <div class="line-numbers" id="html-lines">1</div>
                 <div class="code-area">
                     <textarea id="html-code" spellcheck="false" oninput="updateEditor('html')" onscroll="syncScroll('html')"></textarea>
-                    <pre><code id="html-highlight" class="language-html"></code></pre>
+                    <pre aria-hidden="true"><code id="html-highlight" class="language-html"></code></pre>
                 </div>
             </div>
         </div>
         <div class="editor-box">
             <div class="editor-header">CSS</div>
             <div class="editor-container">
-                <div class="line-numbers" id="css-lines"></div>
+                <div class="line-numbers" id="css-lines">1</div>
                 <div class="code-area">
                     <textarea id="css-code" spellcheck="false" oninput="updateEditor('css')" onscroll="syncScroll('css')"></textarea>
-                    <pre><code id="css-highlight" class="language-css"></code></pre>
+                    <pre aria-hidden="true"><code id="css-highlight" class="language-css"></code></pre>
                 </div>
             </div>
         </div>
         <div class="editor-box">
             <div class="editor-header">JAVASCRIPT</div>
             <div class="editor-container">
-                <div class="line-numbers" id="js-lines"></div>
+                <div class="line-numbers" id="js-lines">1</div>
                 <div class="code-area">
                     <textarea id="js-code" spellcheck="false" oninput="updateEditor('js')" onscroll="syncScroll('js')"></textarea>
-                    <pre><code id="js-highlight" class="language-javascript"></code></pre>
+                    <pre aria-hidden="true"><code id="js-highlight" class="language-javascript"></code></pre>
                 </div>
             </div>
         </div>
@@ -138,15 +143,15 @@
     const lang = isSpanish ? {
         warn: "Proyectos ligeros / Light projects",
         dl: "DESCARGAR", donate: "DONAR", note: "Modo oscuro:", proj: "Proyecto",
-        htmlEx: "<h1>¡Hola Anuar!</h1>\n<p>El código ahora tiene colores.</p>",
-        cssEx: "body {\n  text-align: center;\n  padding-top: 50px;\n  color: #3b82f6;\n}",
-        jsEx: "console.log('¡Editor Pro listo!');"
+        htmlEx: "<h1>¡Hola Mundo!</h1>\n<p>Contenido centrado automáticamente.</p>",
+        cssEx: "/* Estilos automáticos */\nh1 {\n  color: #3b82f6;\n}",
+        jsEx: "console.log('¡Listo para programar!');"
     } : {
         warn: "Light projects only",
         dl: "DOWNLOAD", donate: "DONATE", note: "Dark mode:", proj: "Project",
-        htmlEx: "<h1>Hello!</h1>\n<p>Code now has colors.</p>",
-        cssEx: "body {\n  text-align: center;\n  padding-top: 50px;\n  color: #3b82f6;\n}",
-        jsEx: "console.log('Pro Editor ready!');"
+        htmlEx: "<h1>Hello World!</h1>\n<p>Content is auto-centered.</p>",
+        cssEx: "/* Auto styles */\nh1 {\n  color: #3b82f6;\n}",
+        jsEx: "console.log('Ready to code!');"
     };
 
     document.getElementById('storage-warning').innerText = lang.warn;
@@ -154,23 +159,20 @@
     document.getElementById('txt-donate').innerText = lang.donate;
     document.getElementById('eye-note').innerText = lang.note;
 
-    let tabs = JSON.parse(localStorage.getItem('tabs_v4')) || [];
-    let activeTabId = localStorage.getItem('active_v4') || null;
+    let tabs = JSON.parse(localStorage.getItem('previewer_v5')) || [];
+    let activeTabId = localStorage.getItem('active_v5') || null;
     let isDarkMode = true;
 
-    // --- FUNCIONES DEL EDITOR ---
     function updateEditor(type) {
         const area = document.getElementById(`${type}-code`);
         const highlight = document.getElementById(`${type}-highlight`);
         const lines = document.getElementById(`${type}-lines`);
         
-        // Colores
         let code = area.value;
-        if(code[code.length-1] === "\n") code += " "; // Fix para el salto de línea final
-        highlight.textContent = code;
+        // Evitar que el código "baile" al final de la línea
+        highlight.textContent = code + (code.endsWith('\n') ? ' ' : '');
         Prism.highlightElement(highlight);
 
-        // Números de línea
         const lineCount = code.split('\n').length;
         lines.innerHTML = Array.from({length: lineCount}, (_, i) => i + 1).join('<br>');
         
@@ -192,7 +194,7 @@
             tab.html = document.getElementById('html-code').value;
             tab.css = document.getElementById('css-code').value;
             tab.js = document.getElementById('js-code').value;
-            localStorage.setItem('tabs_v4', JSON.stringify(tabs));
+            localStorage.setItem('previewer_v5', JSON.stringify(tabs));
             updateIframe();
         }
     }
@@ -204,18 +206,17 @@
         const bg = isDarkMode ? "#1e1f20" : "#f5f5f5";
         const color = isDarkMode ? "#e3e3e3" : "#333";
         doc.open();
-        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;font-family:sans-serif;}${tab.css}</style></head><body><div>${tab.html}</div><script>${tab.js}<\/script></body></html>`);
+        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;font-family:sans-serif;}${tab.css}</style></head><body>${tab.html}<script>${tab.js}<\/script></body></html>`);
         doc.close();
     }
 
-    // --- TABLAS Y TABS ---
     function renderTabs() {
         const list = document.getElementById('tabs-list');
         list.innerHTML = "";
         tabs.forEach(tab => {
             const el = document.createElement('div');
             el.className = `tab ${tab.id == activeTabId ? 'active' : ''}`;
-            el.innerHTML = `<span>${tab.name}</span><div style='margin-left:8px;opacity:0.5' onclick='closeTab(${tab.id}, event)'>✕</div>`;
+            el.innerHTML = `<span>${tab.name}</span><div style='margin-left:8px;opacity:0.3' onclick='closeTab(${tab.id}, event)'>✕</div>`;
             el.onclick = () => switchTab(tab.id);
             list.appendChild(el);
         });
@@ -232,17 +233,23 @@
 
     function switchTab(id) {
         activeTabId = id;
-        localStorage.setItem('active_v4', id);
+        localStorage.setItem('active_v5', id);
         const tab = tabs.find(t => t.id == id);
         ['html', 'css', 'js'].forEach(type => {
-            document.getElementById(`${type}-code`).value = tab[type];
+            const area = document.getElementById(`${type}-code`);
+            area.value = tab[type];
             updateEditor(type);
         });
         renderTabs();
     }
 
-    // --- UTILIDADES ---
-    function clearAllHistory() { if(confirm('¿Borrar todo?')) { localStorage.clear(); location.reload(); } }
+    function closeTab(id, e) {
+        e.stopPropagation();
+        tabs = tabs.filter(t => t.id != id);
+        if (tabs.length === 0) createNewTab(); else switchTab(tabs[0].id);
+    }
+
+    function clearAllHistory() { if(confirm(isSpanish ? '¿Borrar todo?' : 'Clear all?')) { localStorage.clear(); location.reload(); } }
     function toggleTheme() { isDarkMode = !isDarkMode; updateIframe(); }
     
     // Resizer
@@ -253,8 +260,9 @@
             let width = (e.clientX / window.innerWidth) * 100;
             if (width > 20 && width < 80) leftSide.style.width = width + '%';
         };
+        const stopDrag = () => { document.removeEventListener('mousemove', doDrag); };
         document.addEventListener('mousemove', doDrag);
-        document.addEventListener('mouseup', () => document.removeEventListener('mousemove', doDrag));
+        document.addEventListener('mouseup', stopDrag);
     });
 
     // Soporte Tab
