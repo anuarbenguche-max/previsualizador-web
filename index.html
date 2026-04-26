@@ -4,174 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Online Code Previewer</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
-
     <style>
-        /* [COLORES Y VARIABLES] */
         :root {
-            --bg-color: #131314;
+            --bg-color: #0f0f0f;
             --card-bg: #1e1f20;
-            --header-dark: #0f0f0f;
+            --header-dark: #000000;
             --text-main: #e3e3e3;
             --text-dim: #b4b4b4;
             --code-text: #a0a0a0;
             --accent-blue: #0070ba; 
             --border-line: #2a2a2a;
             --border-radius: 8px;
-            /* [SOMBRAS NOTABLES] */
-            --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.6);
-            --shadow-strong: 0 15px 45px rgba(0, 0, 0, 0.8);
+            --shadow-strong: 0 15px 45px rgba(0, 0, 0, 0.9);
         }
 
         * { box-sizing: border-box; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Lato', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Lato', sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
+        header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: var(--bg-color); z-index: 10; }
+        h1 { font-size: 1.3rem; font-weight: 900; margin: 0; }
 
-        /* [ID: ENCABEZADO_WEB] */
-        header {
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+        .actions-group { display: flex; gap: 12px; }
+        .btn { padding: 8px 18px; text-decoration: none; border-radius: var(--border-radius); font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; transition: 0.3s; border: none; cursor: pointer; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .btn-download { background-color: #333; border: 1px solid var(--border-line); }
+        .btn-paypal { background-color: var(--accent-blue); }
+        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-strong); }
 
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 900;
-            margin: 0;
-            letter-spacing: -0.5px;
-            color: #fff;
-        }
+        .main-layout { display: grid; grid-template-columns: 400px 1fr; gap: 20px; padding: 0 20px 20px 20px; flex: 1; overflow: hidden; }
 
-        .actions-group {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
+        /* Editores */
+        .editors-column { display: flex; flex-direction: column; gap: 15px; height: 100%; }
+        .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); box-shadow: var(--shadow-strong); }
+        .editor-header { background: var(--header-dark); padding: 8px 15px; border-bottom: 1px solid var(--border-line); }
+        .label { font-size: 0.6rem; color: var(--text-dim); font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; }
+        textarea { background: transparent; border: none; color: var(--code-text); font-family: 'Consolas', monospace; font-size: 13px; flex: 1; padding: 12px; resize: none; outline: none; line-height: 1.5; }
 
-        /* [ID: BOTONES_ACCION] */
-        .btn {
-            padding: 10px 22px;
-            text-decoration: none;
-            border-radius: var(--border-radius);
-            font-weight: 700;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: var(--shadow-soft);
-        }
+        /* Sistema de Pestañas y Preview */
+        .preview-container { display: flex; flex-direction: column; height: 100%; background: var(--card-bg); border-radius: var(--border-radius); border: 1px solid var(--border-line); box-shadow: var(--shadow-strong); overflow: hidden; }
+        
+        .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding: 0 10px; border-bottom: 1px solid var(--border-line); gap: 5px; overflow-x: auto; }
+        .tab { padding: 10px 15px; color: var(--text-dim); font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid transparent; white-space: nowrap; }
+        .tab.active { color: white; border-bottom: 2px solid var(--accent-blue); background: rgba(255,255,255,0.05); }
+        .tab span { outline: none; padding: 2px 5px; border-radius: 4px; }
+        .tab span:focus { background: #333; }
+        
+        .add-tab { font-size: 1.5rem; color: var(--text-dim); cursor: pointer; padding: 0 15px; transition: 0.3s; }
+        .add-tab:hover { color: white; transform: scale(1.2); }
 
-        .btn-download { background-color: #303136; color: var(--text-main); border: 1px solid var(--border-line); }
-        .btn-paypal { background-color: var(--accent-blue); color: white; }
-
-        .btn:hover { 
-            transform: translateY(-3px); 
-            box-shadow: var(--shadow-strong);
-            filter: brightness(1.1);
-        }
-
-        /* [ID: LAYOUT_PRINCIPAL] */
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            padding: 0 30px 30px 30px;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        .editors-column {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            height: 100%;
-        }
-
-        /* [ID: CAJAS_EDITORES] */
-        .editor-box {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            border: 1px solid var(--border-line);
-            box-shadow: var(--shadow-soft);
-            transition: all 0.3s ease;
-        }
-
-        .editor-box:focus-within {
-            box-shadow: var(--shadow-strong);
-            border-color: #444;
-        }
-
-        .editor-header {
-            background: var(--header-dark);
-            padding: 12px 15px;
-            border-bottom: 2px solid var(--border-line);
-        }
-
-        .label {
-            font-size: 0.65rem;
-            color: var(--text-dim);
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        textarea {
-            background: transparent;
-            border: none;
-            color: var(--code-text);
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 14px;
-            flex: 1;
-            padding: 15px;
-            resize: none;
-            outline: none;
-            line-height: 1.6;
-        }
-
-        /* [ID: CAJA_PREVIEWER] */
-        .preview-column {
-            background: var(--card-bg); /* Inicia con el color de las cajas */
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            height: 100%;
-            border: 1px solid var(--border-line);
-            box-shadow: var(--shadow-soft);
-            transition: background 0.5s ease;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            /* Mantiene transparencia inicial para heredar el fondo del contenedor */
-            background-color: transparent; 
-        }
+        iframe { width: 100%; height: 100%; border: none; background: transparent; }
 
         @media (max-width: 900px) {
             .main-layout { grid-template-columns: 1fr; overflow-y: auto; }
-            body { overflow-y: auto; height: auto; }
-            .preview-column { min-height: 450px; order: -1; }
-            header { text-align: center; justify-content: center; }
-            .actions-group { width: 100%; justify-content: center; }
+            .preview-container { min-height: 400px; }
         }
     </style>
 </head>
@@ -180,15 +65,8 @@
 <header>
     <h1>Free Online Code Previewer</h1>
     <div class="actions-group">
-        <button class="btn btn-download" onclick="downloadIndex()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            DESCARGAR .HTML
-        </button>
-
-        <a href="https://paypal.me/abenguche" target="_blank" class="btn btn-paypal">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path></svg>
-            DONAR CON PAYPAL
-        </a>
+        <button class="btn btn-download" onclick="downloadCurrentTab()">DESCARGAR .HTML</button>
+        <a href="https://paypal.me/abenguche" target="_blank" class="btn btn-paypal">DONAR CON PAYPAL</a>
     </div>
 </header>
 
@@ -203,68 +81,106 @@
             <textarea id="css-code" placeholder="Escribe CSS..."></textarea>
         </div>
         <div class="editor-box">
-            <div class="editor-header"><div class="label">JAVASCRIPT</div></div>
+            <div class="editor-header"><div class="label">JS</div></div>
             <textarea id="js-code" placeholder="Escribe JS..."></textarea>
         </div>
     </div>
-    <div class="preview-column" id="preview-container">
+
+    <div class="preview-container">
+        <div class="tabs-bar" id="tabs-bar">
+            <div class="add-tab" onclick="createNewTab()">+</div>
+        </div>
         <iframe id="preview-iframe"></iframe>
     </div>
 </div>
 
 <script>
-    const htmlEditor = document.getElementById('html-code');
-    const cssEditor = document.getElementById('css-code');
-    const jsEditor = document.getElementById('js-code');
+    let tabs = [];
+    let activeTabId = null;
+
+    const htmlInput = document.getElementById('html-code');
+    const cssInput = document.getElementById('css-code');
+    const jsInput = document.getElementById('js-code');
     const preview = document.getElementById('preview-iframe');
-    const previewContainer = document.getElementById('preview-container');
+    const tabsBar = document.getElementById('tabs-bar');
 
-    function update() {
-        const doc = preview.contentDocument || preview.contentWindow.document;
+    function createNewTab(name = "Nuevo Proyecto") {
+        const id = Date.now();
+        const newTab = {
+            id: id,
+            name: name,
+            html: "<h1>Hola mundo</h1>",
+            css: "body { font-family: 'Lato'; color: white; display: flex; justify-content: center; align-items: center; height: 80vh; }",
+            js: ""
+        };
+        tabs.push(newTab);
+        renderTabs();
+        switchTab(id);
+    }
+
+    function renderTabs() {
+        const addBtn = document.querySelector('.add-tab');
+        document.querySelectorAll('.tab').forEach(t => t.remove());
         
-        // Si hay contenido, cambiamos el fondo a blanco por defecto 
-        // para que el usuario vea su diseño, a menos que él defina un fondo en CSS.
-        if (htmlEditor.value || cssEditor.value) {
-            previewContainer.style.background = "white";
-        }
+        tabs.forEach(tab => {
+            const tabEl = document.createElement('div');
+            tabEl.className = `tab ${tab.id === activeTabId ? 'active' : ''}`;
+            tabEl.innerHTML = `<span contenteditable="true" onblur="updateTabName(${tab.id}, this)">${tab.name}</span>`;
+            tabEl.onclick = (e) => { if(e.target.tagName !== 'SPAN') switchTab(tab.id); };
+            tabsBar.insertBefore(tabEl, addBtn);
+        });
+    }
 
+    function switchTab(id) {
+        if (activeTabId) saveCurrentState();
+        activeTabId = id;
+        const tab = tabs.find(t => t.id === id);
+        htmlInput.value = tab.html;
+        cssInput.value = tab.css;
+        jsInput.value = tab.js;
+        renderTabs();
+        updatePreview();
+    }
+
+    function saveCurrentState() {
+        const tab = tabs.find(t => t.id === activeTabId);
+        if (tab) {
+            tab.html = htmlInput.value;
+            tab.css = cssInput.value;
+            tab.js = jsInput.value;
+        }
+    }
+
+    function updateTabName(id, el) {
+        const tab = tabs.find(t => t.id === id);
+        if (tab) tab.name = el.innerText;
+    }
+
+    function updatePreview() {
+        const doc = preview.contentDocument || preview.contentWindow.document;
         doc.open();
-        doc.write(`
-            <!DOCTYPE html>
-            <html lang="es">
-            <head>
-                <meta charset="UTF-8">
-                <style>${cssEditor.value}</style>
-            </head>
-            <body>
-                ${htmlEditor.value}
-                <script>${jsEditor.value}<\/script>
-            </body>
-            </html>
-        `);
+        doc.write(`<html><head><style>${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`);
         doc.close();
     }
 
-    [htmlEditor, cssEditor, jsEditor].forEach(el => el.addEventListener('input', update));
-
-    function downloadIndex() {
-        const fullCode = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><style>${cssEditor.value}</style></head><body>${htmlEditor.value}<script>${jsEditor.value}<\/script></body></html>`;
+    function downloadCurrentTab() {
+        const tab = tabs.find(t => t.id === activeTabId);
+        const fullCode = `<!DOCTYPE html><html><head><style>${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`;
         const blob = new Blob([fullCode], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'index.html';
+        a.download = `${tab.name}.html`;
         a.click();
-        URL.revokeObjectURL(url);
     }
 
-    // [MENSAJE: HOLA MUNDO]
-    htmlEditor.value = "<h1>Hola mundo</h1>";
-    cssEditor.value = "body {\n  font-family: 'Lato', sans-serif;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 80vh;\n  color: #333;\n}";
-    
-    // Al inicio no llamamos a update() para mantener el color gris, 
-    // o puedes llamarlo y el CSS inicial pondrá el fondo blanco.
-    update(); 
+    [htmlInput, cssInput, jsInput].forEach(el => el.addEventListener('input', () => {
+        saveCurrentState();
+        updatePreview();
+    }));
+
+    // Iniciar con una pestaña
+    createNewTab("Proyecto 1");
 </script>
 
 </body>
