@@ -31,8 +31,6 @@
         
         .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
         .actions-group { display: flex; gap: 12px; }
-        
-        /* Nota de protección visual */
         .eye-care-note { font-size: 0.65rem; font-style: italic; color: var(--text-dim); opacity: 0.7; font-weight: 300; }
 
         .btn { padding: 8px 18px; text-decoration: none; border-radius: var(--border-radius); font-weight: 700; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; transition: 0.2s; border: none; cursor: pointer; color: white; }
@@ -47,7 +45,6 @@
         .label { font-size: 0.6rem; color: var(--text-dim); font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; }
         textarea { background: transparent; border: none; color: var(--code-text); font-family: 'Consolas', monospace; font-size: 13px; flex: 1; padding: 12px; resize: none; outline: none; line-height: 1.6; }
 
-        /* PESTAÑAS Y PREVIEW */
         .preview-container { display: flex; flex-direction: column; height: 100%; border-radius: var(--border-radius); border: 1px solid var(--border-line); box-shadow: var(--shadow-soft); overflow: hidden; position: relative; }
         .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 15px; border-bottom: 2px solid var(--border-line); justify-content: space-between; }
         
@@ -122,7 +119,7 @@
 <script>
     let tabs = [];
     let activeTabId = null;
-    let isDarkMode = true; // CAMBIADO: Inicia en OSCURO por defecto
+    let isDarkMode = true; 
     const MAX_TABS = 5;
 
     const htmlInput = document.getElementById('html-code');
@@ -142,7 +139,7 @@
             id: id,
             name: `Proyecto ${num}`,
             html: "<h1>Hola mundo</h1>",
-            css: "body { font-family: 'Lato', sans-serif; text-align: center; padding-top: 50px; }",
+            css: "body {\n  font-family: 'Lato', sans-serif;\n  text-align: center;\n  padding-top: 50px;\n}",
             js: ""
         });
         renderTabs();
@@ -217,7 +214,6 @@
 
     function toggleTheme() {
         isDarkMode = !isDarkMode;
-        // Cambiar icono según el estado
         themeIcon.innerHTML = isDarkMode ? 
             '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><path d="M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>' : 
             '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
@@ -227,12 +223,31 @@
     function updatePreview() {
         const doc = preview.contentDocument || preview.contentWindow.document;
         const bg = isDarkMode ? "#1e1f20" : "#f5f5f5";
-        const color = isDarkMode ? "#e3e3e3" : "#333";
+        const defaultTextColor = isDarkMode ? "#e3e3e3" : "#333"; // Detección automática del texto
         
         document.getElementById('preview-wrapper').style.background = bg;
 
         doc.open();
-        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;transition:0.3s;}${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`);
+        doc.write(`
+            <html>
+            <head>
+                <style>
+                    body { 
+                        background: ${bg}; 
+                        color: ${defaultTextColor}; 
+                        margin: 0; 
+                        min-height: 100vh; 
+                        transition: color 0.3s, background 0.3s; 
+                    }
+                    ${cssInput.value}
+                </style>
+            </head>
+            <body>
+                ${htmlInput.value}
+                <script>${jsInput.value}<\/script>
+            </body>
+            </html>
+        `);
         doc.close();
     }
 
@@ -240,7 +255,7 @@
 
     function downloadCurrentTab() {
         const tab = tabs.find(t => t.id === activeTabId);
-        const code = `<!DOCTYPE html><html><head><style>body{background:${isDarkMode?'#1e1f20':'#f5f5f5'};color:${isDarkMode?'#eee':'#333'};}${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`;
+        const code = `<!DOCTYPE html><html><head><style>body{background:${isDarkMode?'#1e1f20':'#f5f5f5'};color:${isDarkMode?'#e3e3e3':'#333'};}${cssInput.value}</style></head><body>${htmlInput.value}<script>${jsInput.value}<\/script></body></html>`;
         const blob = new Blob([code], {type: 'text/html'});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
