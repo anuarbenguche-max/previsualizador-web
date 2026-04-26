@@ -22,7 +22,6 @@
         * { box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        /* [HEADER RESPONSIVO] */
         header { 
             padding: 10px 20px; 
             display: flex; 
@@ -34,20 +33,10 @@
         }
         .brand { display: flex; flex-direction: column; }
         h1 { font-size: 1rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
-        
-        /* NOTA DE ADVERTENCIA MEJORADA: Más legible */
-        .storage-warning { 
-            font-size: 0.65rem; /* Un poco más grande */
-            color: var(--text-dim); 
-            font-style: italic; 
-            font-weight: 500; /* Más gruesa */
-            opacity: 0.9; /* Menos transparente */
-            margin-top: 1px;
-        }
+        .storage-warning { font-size: 0.65rem; color: var(--text-dim); font-style: italic; font-weight: 500; opacity: 0.9; margin-top: 1px; }
         
         .actions-group { display: flex; gap: 8px; align-items: center; }
 
-        /* [BOTONES PEQUEÑOS Y ELEGANTES] */
         .btn { 
             padding: 6px 12px; 
             border-radius: var(--border-radius); 
@@ -64,19 +53,10 @@
         }
         .btn-download { background-color: #272a34; border: 1px solid var(--border-line); color: var(--text-dim); }
         .btn-paypal { background-color: var(--accent-blue); }
-        
-        /* Botón Basura Solo Icono */
-        .btn-clear { 
-            background: transparent; 
-            color: var(--accent-red); 
-            border: 1px solid rgba(239, 68, 68, 0.2); 
-            padding: 6px 8px;
-        }
+        .btn-clear { background: transparent; color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.2); padding: 6px 8px; }
         .btn-clear:hover { background-color: var(--accent-red); color: white; }
-        
         .btn:hover:not(.btn-clear) { transform: translateY(-1px); filter: brightness(1.1); }
 
-        /* [LAYOUT] */
         .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; flex: 1; overflow: hidden; }
         .editors-column { display: flex; flex-direction: column; gap: 10px; height: 100%; }
         .editor-box { background: var(--card-bg); border-radius: var(--border-radius); flex: 1; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border-line); }
@@ -93,7 +73,7 @@
         .add-tab { font-size: 1.2rem; color: var(--text-dim); cursor: pointer; padding: 0 10px; }
 
         .eye-care-note { font-size: 0.6rem; font-style: italic; color: var(--text-dim); margin-right: 8px; }
-        iframe { width: 100%; height: 100%; border: none; background: white; }
+        iframe { width: 100%; height: 100%; border: none; }
 
         @media (max-width: 900px) { 
             .main-layout { grid-template-columns: 1fr; overflow-y: auto; } 
@@ -114,9 +94,7 @@
         <button class="btn btn-clear" onclick="clearAllHistory()" id="btn-clear" title="Clear History">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
         </button>
-        
         <button class="btn btn-download" id="btn-download" onclick="downloadCurrentTab()"></button>
-        
         <a href="https://paypal.me/abenguche" target="_blank" class="btn btn-paypal" id="btn-paypal">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
                 <path d="M20.067 8.478c.492.47.662 1.137.492 1.81-.777 3.078-2.926 4.846-6.103 4.846H11.6l-.793 4.19a.448.448 0 0 1-.44.365h-3.46a.18.18 0 0 1-.177-.213l2.52-13.431a.448.448 0 0 1 .44-.365h4.582c2.08 0 3.513.473 4.35 1.416.322.36.508.762.585 1.192.077.43.04.881-.11 1.39a4.73 4.73 0 0 1-.11 1.39zm-5.881.553c0-.105-.085-.19-.19-.19h-2.122l-.565 3.03h1.928c1.102 0 1.825-.568 2.062-1.503.14-.548.048-.962-.276-1.183a.952.952 0 0 0-.837-.154z"/>
@@ -128,9 +106,18 @@
 
 <div class="main-layout">
     <div class="editors-column">
-        <div class="editor-box"><div class="editor-header"><div class="label">HTML</div></div><textarea id="html-code" oninput="saveAndPreview()"></textarea></div>
-        <div class="editor-box"><div class="editor-header"><div class="label">CSS</div></div><textarea id="css-code" oninput="saveAndPreview()"></textarea></div>
-        <div class="editor-box"><div class="editor-header"><div class="label">JS</div></div><textarea id="js-code" oninput="saveAndPreview()"></textarea></div>
+        <div class="editor-box">
+            <div class="editor-header"><div class="label">HTML</div></div>
+            <textarea id="html-code" oninput="saveAndPreview()"></textarea>
+        </div>
+        <div class="editor-box">
+            <div class="editor-header"><div class="label">CSS</div></div>
+            <textarea id="css-code" oninput="saveAndPreview()"></textarea>
+        </div>
+        <div class="editor-box">
+            <div class="editor-header"><div class="label">JAVASCRIPT</div></div>
+            <textarea id="js-code" oninput="saveAndPreview()"></textarea>
+        </div>
     </div>
 
     <div class="preview-container" id="preview-wrapper">
@@ -152,11 +139,19 @@
     const lang = isSpanish ? {
         warn: "Proyectos ligeros / Light projects",
         clearMsg: "¿Borrar todo el historial?",
-        dl: "DESCARGAR", donate: "DONAR", note: "Modo oscuro:", proj: "Proyecto", hello: "<h1>Hola mundo</h1>"
+        dl: "DESCARGAR", donate: "DONAR", note: "Modo oscuro:", proj: "Proyecto",
+        // EJEMPLOS POR DEFECTO
+        htmlEx: "<h1>Hola mundo</h1>\n<p>Haz clic en el botón de abajo</p>\n<button id='btn'>Haz clic aquí</button>",
+        cssEx: "body {\n  font-family: 'Inter', sans-serif;\n  text-align: center;\n  padding-top: 50px;\n}\n\nbutton {\n  background: #3b82f6;\n  color: white;\n  border: none;\n  padding: 10px 20px;\n  border-radius: 5px;\n  cursor: pointer;\n}",
+        jsEx: "// Ejemplo de JavaScript\ndocument.getElementById('btn').onclick = function() {\n  alert('¡Hola desde el código!');\n  console.log('Botón presionado');\n};"
     } : {
         warn: "Light projects only",
         clearMsg: "Delete all history?",
-        dl: "DOWNLOAD", donate: "DONATE", note: "Dark mode:", proj: "Project", hello: "<h1>Hello world</h1>"
+        dl: "DOWNLOAD", donate: "DONATE", note: "Dark mode:", proj: "Project",
+        // DEFAULT EXAMPLES
+        htmlEx: "<h1>Hello World</h1>\n<p>Click the button below</p>\n<button id='btn'>Click Me</button>",
+        cssEx: "body {\n  font-family: 'Inter', sans-serif;\n  text-align: center;\n  padding-top: 50px;\n}\n\nbutton {\n  background: #3b82f6;\n  color: white;\n  border: none;\n  padding: 10px 20px;\n  border-radius: 5px;\n  cursor: pointer;\n}",
+        jsEx: "// JavaScript Example\ndocument.getElementById('btn').onclick = function() {\n  alert('Hello from the code!');\n  console.log('Button clicked');\n};"
     };
 
     document.getElementById('storage-warning').innerText = lang.warn;
@@ -188,7 +183,7 @@
         const color = isDarkMode ? "#e3e3e3" : "#333";
         document.getElementById('preview-wrapper').style.background = bg;
         doc.open();
-        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;font-family:'Inter',sans-serif;transition:0.3s;}${tab.css}</style></head><body>${tab.html}<script>${tab.js}<\/script></body></html>`);
+        doc.write(`<html><head><style>body{background:${bg};color:${color};margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;font-family:'Inter',sans-serif;transition:0.3s;}${tab.css}</style></head><body><div style='text-align:center'>${tab.html}</div><script>${tab.js}<\/script></body></html>`);
         doc.close();
     }
 
@@ -214,7 +209,8 @@
 
     function createNewTab() {
         const id = Date.now();
-        tabs.push({ id, name: `${lang.proj} ${tabs.length + 1}`, html: lang.hello, css: "", js: "" });
+        // AHORA CADA NUEVO PROYECTO TIENE EJEMPLOS EN LAS TRES CAJAS
+        tabs.push({ id, name: `${lang.proj} ${tabs.length + 1}`, html: lang.htmlEx, css: lang.cssEx, js: lang.jsEx });
         switchTab(id);
     }
 
@@ -236,17 +232,14 @@
     }
 
     function clearAllHistory() {
-        if (confirm(lang.clearMsg)) {
-            localStorage.clear();
-            location.reload();
-        }
+        if (confirm(lang.clearMsg)) { localStorage.clear(); location.reload(); }
     }
 
     function toggleTheme() { isDarkMode = !isDarkMode; updateIframe(); }
 
     function downloadCurrentTab() {
         const tab = tabs.find(t => t.id == activeTabId);
-        const code = `<!DOCTYPE html><html><head><style>body{background:${isDarkMode?'#1e1f20':'#f5f5f5'};color:${isDarkMode?'#e3e3e3':'#333'};display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;font-family:sans-serif;}${tab.css}</style></head><body>${tab.html}<script>${tab.js}<\/script></body></html>`;
+        const code = `<!DOCTYPE html><html><head><style>body{background:${isDarkMode?'#1e1f20':'#f5f5f5'};color:${isDarkMode?'#e3e3e3':'#333'};display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;font-family:sans-serif;}${tab.css}</style></head><body><div style='text-align:center'>${tab.html}</div><script>${tab.js}<\/script></body></html>`;
         const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([code], {type: 'text/html'})); a.download = `${tab.name}.html`; a.click();
     }
 
