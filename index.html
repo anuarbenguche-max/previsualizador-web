@@ -22,41 +22,14 @@
         * { box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        header { 
-            padding: 12px 25px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-bottom: 1px solid var(--border-line);
-            gap: 15px;
-        }
+        header { padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-line); gap: 15px; }
         .brand { display: flex; flex-direction: column; }
         h1 { font-size: 1.1rem; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
-        
-        .storage-warning { 
-            font-size: 0.8rem; 
-            color: #ccc; 
-            font-style: italic; 
-            font-weight: 500;
-            margin-top: 4px;
-        }
+        .storage-warning { font-size: 0.8rem; color: #ccc; font-style: italic; font-weight: 500; margin-top: 4px; }
         
         .actions-group { display: flex; gap: 8px; align-items: center; }
 
-        .btn { 
-            padding: 6px 14px; 
-            border-radius: var(--border-radius); 
-            font-weight: 600; 
-            font-size: 0.7rem; 
-            border: none; 
-            cursor: pointer; 
-            color: white; 
-            transition: 0.2s; 
-            display: flex; 
-            align-items: center; 
-            gap: 6px;
-            height: 32px;
-        }
+        .btn { padding: 6px 14px; border-radius: var(--border-radius); font-weight: 600; font-size: 0.7rem; border: none; cursor: pointer; color: white; transition: 0.2s; display: flex; align-items: center; gap: 6px; height: 32px; }
         .btn-download { background-color: #272a34; border: 1px solid var(--border-line); color: var(--text-dim); }
         .btn-paypal { background-color: var(--accent-blue); }
         .btn-clear { background: transparent; color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.3); }
@@ -73,12 +46,7 @@
         .editor-container { position: relative; flex: 1; display: flex; }
         .line-numbers { width: 40px; padding: 15px 5px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #555; background: #0c0d11; border-right: 1px solid var(--border-line); user-select: none; line-height: 1.6; }
 
-        textarea { 
-            background: transparent; border: none; color: var(--code-text); 
-            font-family: 'JetBrains Mono', monospace; font-size: 13px; 
-            flex: 1; padding: 15px; resize: none; outline: none; 
-            line-height: 1.6; tab-size: 2; white-space: pre;
-        }
+        textarea { background: transparent; border: none; color: var(--code-text); font-family: 'JetBrains Mono', monospace; font-size: 13px; flex: 1; padding: 15px; resize: none; outline: none; line-height: 1.6; tab-size: 2; white-space: pre; }
 
         .preview-side { flex: 1; height: 100%; display: flex; flex-direction: column; border-radius: var(--border-radius); border: 1px solid var(--border-line); overflow: hidden; }
         .tabs-bar { background: var(--header-dark); display: flex; align-items: center; padding-right: 15px; border-bottom: 1px solid var(--border-line); justify-content: space-between; height: 40px; }
@@ -101,7 +69,7 @@
         <span class="storage-warning" id="storage-warning"></span>
     </div>
     <div class="actions-group">
-        <button class="btn btn-clear" onclick="clearAllHistory()" title="Clear">
+        <button class="btn btn-clear" onclick="clearAllHistory()" title="Clear History">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
         </button>
         <button class="btn btn-download" id="btn-download" onclick="downloadCurrentTab()"></button>
@@ -158,14 +126,14 @@
     const lang = isSpanish ? {
         warn: "Proyectos ligeros / Light projects only",
         clearMsg: "¿Borrar todo?",
-        dl: "DESCARGAR", donate: "DONAR", note: "Modo oscuro:", proj: "Proyecto",
+        dl: "DESCARGAR .HTML", donate: "DONAR", note: "Modo oscuro:", proj: "Proyecto",
         html: "<h1>¡Hola Mundo!</h1>\n<button id='btn'>Haz clic aquí</button>", 
         css: "body { text-align: center; padding-top: 50px; }\nbutton { padding: 10px; cursor: pointer; background: #3b82f6; color: white; border: none; border-radius: 4px; }", 
         js: "document.getElementById('btn').onclick = () => alert('¡Funciona!');"
     } : {
         warn: "Light projects only / Proyectos ligeros",
         clearMsg: "Clear all?",
-        dl: "DOWNLOAD", donate: "DONATE", note: "Dark mode:", proj: "Project",
+        dl: "DOWNLOAD .HTML", donate: "DONATE", note: "Dark mode:", proj: "Project",
         html: "<h1>Hello World!</h1>\n<button id='btn'>Click me</button>", 
         css: "body { text-align: center; padding-top: 50px; }\nbutton { padding: 10px; cursor: pointer; background: #3b82f6; color: white; border: none; border-radius: 4px; }", 
         js: "document.getElementById('btn').onclick = () => alert('It works!');"
@@ -176,8 +144,9 @@
     document.getElementById('txt-donate').innerText = lang.donate;
     document.getElementById('eye-note').innerText = lang.note;
 
-    let tabs = JSON.parse(localStorage.getItem('tabs_v7')) || [];
-    let activeTabId = localStorage.getItem('active_v7') || null;
+    // Cambiamos el nombre de la versión de la base de datos para forzar el refresco de los ejemplos
+    let tabs = JSON.parse(localStorage.getItem('tabs_v8_forced')) || [];
+    let activeTabId = localStorage.getItem('active_v8_forced') || null;
     let isDarkMode = true;
 
     function updateLines(type) {
@@ -198,7 +167,7 @@
             tab.html = document.getElementById('html-code').value;
             tab.css = document.getElementById('css-code').value;
             tab.js = document.getElementById('js-code').value;
-            localStorage.setItem('tabs_v7', JSON.stringify(tabs));
+            localStorage.setItem('tabs_v8_forced', JSON.stringify(tabs));
             updateIframe();
         }
     }
@@ -225,7 +194,7 @@
             el.ondblclick = () => {
                 const s = el.querySelector('span'); s.contentEditable = true; s.focus();
                 document.execCommand('selectAll', false, null);
-                s.onblur = () => { s.contentEditable = false; tab.name = s.innerText.trim() || "Project"; localStorage.setItem('tabs_v7', JSON.stringify(tabs)); renderTabs(); };
+                s.onblur = () => { s.contentEditable = false; tab.name = s.innerText.trim() || "Project"; localStorage.setItem('tabs_v8_forced', JSON.stringify(tabs)); renderTabs(); };
             };
             list.appendChild(el);
         });
@@ -242,17 +211,19 @@
 
     function switchTab(id) {
         activeTabId = id;
-        localStorage.setItem('active_v7', id);
+        localStorage.setItem('active_v8_forced', id);
         const tab = tabs.find(t => t.id == id);
         
-        // Si por alguna razón la pestaña guardada estaba vacía, inyectamos el ejemplo
+        // REFUERZO: Si al cambiar de pestaña falta el código, lo inyectamos de los ejemplos
+        if(!tab.html) tab.html = lang.html;
         if(!tab.css) tab.css = lang.css;
         if(!tab.js) tab.js = lang.js;
 
-        ['html', 'css', 'js'].forEach(type => {
-            document.getElementById(`${type}-code`).value = tab[type];
-            updateLines(type);
-        });
+        document.getElementById('html-code').value = tab.html;
+        document.getElementById('css-code').value = tab.css;
+        document.getElementById('js-code').value = tab.js;
+
+        ['html', 'css', 'js'].forEach(updateLines);
         renderTabs();
         updateIframe();
     }
